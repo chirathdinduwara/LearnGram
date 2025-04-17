@@ -1,9 +1,9 @@
-import HomePage from "./pages/Home/HomePage";
 
+import { Outlet } from "react-router-dom";
 function App() {
   return (
     <>
-      <HomePage />
+      <Outlet />
     </>
   );
 }

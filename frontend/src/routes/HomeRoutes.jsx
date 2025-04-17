@@ -1,4 +1,7 @@
+import HomePage from "../pages/Home/HomePage";
 
-function HomeRoutes() {
-
-}
+export default [
+    {
+        index: true, element: <HomePage />
+    }
+]
