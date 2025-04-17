@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "configurations": [
     {
       "type": "java",
@@ -12,3 +13,18 @@
     }
   ]
 }
+=======
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-LearngramApplication<learngram>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.learngram.learngram.LearngramApplication",
+            "projectName": "learngram",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
+>>>>>>> b371dea22fc9777f85d1c563952929a60bbecc0b
