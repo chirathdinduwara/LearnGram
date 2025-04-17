@@ -1,4 +1,6 @@
 import NavBar from "../../components/Home/NavBar";
+import StoryBar from "../../components/Home/StoryBar";
+
 import '../../css/Home/HomePage.css';
 
 
@@ -7,7 +9,9 @@ function HomePage() {
         <>
             <div className="home-container">
                 <NavBar />
-
+                <div className="home-contents">
+                    <StoryBar />
+                </div>
             </div>
         </>
     );
