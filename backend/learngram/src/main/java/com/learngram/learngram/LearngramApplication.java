@@ -9,5 +9,4 @@ public class LearngramApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LearngramApplication.class, args);
 	}
-
 }
