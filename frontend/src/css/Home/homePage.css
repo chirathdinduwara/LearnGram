@@ -1,0 +1,43 @@
+.home-container {
+    background-color: var(--main-bg);
+
+}
+
+.main-nav {
+    background-color: var(--main-bg);
+    padding: 30px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid #1A1A1A;
+    width: max-content;
+}
+
+.nav-items {
+    list-style: none;
+    font-family: "Roboto", sans-serif;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+
+}
+
+.nav-item {
+    color: var(--main-text-color);
+    height: 50px;
+    width: 200px;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border-radius: 10px;
+    gap: 20px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-item:hover {
+    background-color: #1A1A1A;
+}
