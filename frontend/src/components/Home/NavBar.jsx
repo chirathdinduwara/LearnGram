@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { CgHome, CgSearch, CgNotes, CgMathPlus } from "react-icons/cg";
 
-
-
 function NavBar() {
     const [isCreateDropdownOpen, setIsCreateDropdownOpen] = useState(false);
 
