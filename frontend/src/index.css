@@ -16,9 +16,9 @@
 
 .logo {
   font-family: "Agbalumo", system-ui;
-  font-weight: 400;
+  font-weight: 200;
   color: var(--main-text-color);
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 
