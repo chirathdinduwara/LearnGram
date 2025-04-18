@@ -1,4 +1,4 @@
-function Post() {
+function Post({img}) {
     return (
         <>
             <div className="post">
@@ -12,11 +12,19 @@ function Post() {
                 <div className="post-header-details">
                     <div className="post-header-details-left">
                         <p className="post-u-name">_Chirath_d</p>
+                        <p className="post-location">Embilipitiya</p>
                     </div>
                     <div className="post-header-details-right">
-
+                        <p className="post-time"> • 3d</p>
                     </div>
                 </div>
+                </div>
+                <div className="post-content">
+                    <img className="post-img" src={img} alt="" srcset="" />
+                    <div className="post-caption">
+                        <p className="post-u-name">_Chirath_d</p>
+                        <p>1st post</p>
+                    </div>
                 </div>
             </div>
         </>
