@@ -12,7 +12,7 @@
     flex-direction: column;
     justify-content: space-between;
     border-right: 1px solid #1A1A1A;
-    width: max-content;
+    width: fit-content;
     position: sticky;
     top: 0; 
     z-index: 100; 

@@ -1,0 +1,93 @@
+.reelList {
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    background-color: var(--main-bg);
+  }
+  
+
+  .reel {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    scroll-snap-align: start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: black;
+    overflow: hidden;
+    
+  }
+  
+
+  
+  
+  .reelVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  .reelOverlay {
+    position: absolute;
+    bottom: 50px;
+    left: 0px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+
+  .reelActions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 24px;
+  }
+  
+  .muteBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.338);
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+  }
+
+  @keyframes fadeScaleIn {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.5);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+  
+  .centerPlayBtn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 11;
+    font-size: 48px;
+    color: white;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    animation: fadeScaleIn 0.3s ease-out;
+  }
+  
