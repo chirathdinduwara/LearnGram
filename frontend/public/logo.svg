@@ -1,0 +1,45 @@
+<svg id="visual" viewBox="0 0 900 900" width="900" height="900" xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <defs>
+    <!-- Blur Filter -->
+    <filter id="blur1" x="-10%" y="-10%" width="120%" height="120%">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur stdDeviation="189" result="effect1_foregroundBlur"/>
+    </filter>
+
+    <!-- Clip for rounded border -->
+    <clipPath id="roundedClip">
+      <rect x="0" y="0" width="900" height="900" rx="180" ry="180"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background and elements inside rounded area only -->
+  <g clip-path="url(#roundedClip)">
+    <!-- Background -->
+    <rect width="900" height="900" fill="#4a00ff"/>
+
+    <!-- Blurred shapes -->
+    <g filter="url(#blur1)">
+      <circle cx="172" cy="2" fill="#00ffbf" r="420"/>
+      <circle cx="196" cy="654" fill="#4a00ff" r="420"/>
+      <circle cx="333" cy="204" fill="#00ffbf" r="420"/>
+      <circle cx="38" cy="316" fill="#00ffbf" r="420"/>
+      <circle cx="869" cy="838" fill="#4a00ff" r="420"/>
+      <circle cx="565" cy="120" fill="#00ffbf" r="420"/>
+    </g>
+
+    <!-- Larger inner border and graduation cap grouped and centered -->
+    <g transform="translate(450, 450) scale(1.5) translate(-450, -450)"> <!-- Adjusted scale -->
+      <!-- Enlarged Instagram-like rounded square border -->
+      <rect x="180" y="180" width="540" height="540" rx="135" ry="135" fill="none" stroke="#fff" stroke-width="20"/> <!-- Reduced stroke width -->
+
+      <!-- Larger Graduation cap -->
+      <g transform="translate(450, 450)">
+        <polygon points="-225,0 0,-90 225,0 0,90" fill="white"/> <!-- Adjusted size -->
+        <rect x="-135" y="60" width="270" height="45" fill="white"/> <!-- Adjusted size -->
+        <line x1="0" y1="90" x2="0" y2="225" stroke="#FFD700" stroke-width="8"/> <!-- Reduced stroke width -->
+        <circle cx="0" cy="225" r="12" fill="#FFD700"/> <!-- Adjusted size -->
+      </g>
+    </g>
+  </g>
+</svg>

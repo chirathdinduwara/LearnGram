@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { CgHome, CgSearch, CgNotes, CgMathPlus } from "react-icons/cg";
+import { CgHome, CgSearch, CgNotes, CgMathPlus, CgImage, CgCamera, CgFileDocument   } from "react-icons/cg";
 
 function NavBar() {
     const [isCreateDropdownOpen, setIsCreateDropdownOpen] = useState(false);
@@ -31,9 +31,9 @@ function NavBar() {
                     <CgMathPlus size={25} /> Create
                     {isCreateDropdownOpen && (
                         <ul className="dropdown-menu">
-                            <li>Create Course</li>
-                            <li>Create Post</li>
-                            <li>Upload Video</li>
+                            <li>Create Course <CgFileDocument size={20} /></li>
+                            <li>Create Post <CgImage size={20}/></li>
+                            <li>Upload Video <CgCamera size={20}/></li>
                         </ul>
                     )}
                 </li>
