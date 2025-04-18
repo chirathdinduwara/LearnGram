@@ -2,6 +2,7 @@
 @import url("../src/css/Home/homePage.css");
 @import url("../src/css/Story/story.css");
 @import url("../src/css/Post/Post.css");
+@import url("../src/css/video/reel.css");
 
 * {
   --main-bg: #000000;
@@ -18,4 +19,16 @@
   font-weight: 400;
   color: var(--main-text-color);
   font-size: 2rem;
+}
+
+
+.layout {
+  display: flex;
+  height: 100vh;
+
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
 }
