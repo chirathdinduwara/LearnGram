@@ -8,7 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CourseRepository extends MongoRepository<Course, String> {
-
-    // Custom query to find courses that are published
     List<Course> findByIsPublished(boolean isPublished);
 }

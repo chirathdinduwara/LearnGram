@@ -21,14 +21,12 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course saveCourse(Course course) {
-        // Set timestamps for course
         course.setTimestamps();
         return courseRepository.save(course);
     }
 
     @Override
     public List<Course> getAllCourses() {
-        // Convert Iterable to List
         return StreamSupport.stream(
             courseRepository.findAll().spliterator(), false)
             .collect(Collectors.toList());
@@ -55,7 +53,7 @@ public class CourseServiceImpl implements CourseService {
         if (existingCourseOpt.isPresent()) {
             Course existingCourse = existingCourseOpt.get();
 
-            // Update the fields that are not null in the provided course
+            
             if (updatedCourse.getTitle() != null) {
                 existingCourse.setTitle(updatedCourse.getTitle());
             }
@@ -75,7 +73,6 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Course> getPublishedCourses() {
-        // Fetch only the published courses
         return courseRepository.findByIsPublished(true);
     }
 }

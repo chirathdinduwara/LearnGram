@@ -23,7 +23,7 @@ public class CourseController {
     // Create a new course
     @PostMapping(path = "/courses")
     public ResponseEntity<Course> createCourse(@RequestBody Course course) {
-        course.setTimestamps();  // Optionally set timestamps before saving
+        course.setTimestamps();
         Course savedCourse = courseService.saveCourse(course);
         return new ResponseEntity<>(savedCourse, HttpStatus.CREATED);
     }
@@ -32,7 +32,7 @@ public class CourseController {
     @GetMapping(path = "/courses")
     public List<Course> listCourses() {
         List<Course> courses = courseService.getAllCourses();
-        return courses; // Return list of all courses
+        return courses;
     }
 
     // Get a specific course by ID
@@ -43,7 +43,7 @@ public class CourseController {
         if (foundCourse.isPresent()) {
             return new ResponseEntity<>(foundCourse.get(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Course not found
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -53,9 +53,9 @@ public class CourseController {
         boolean deleted = courseService.deleteCourse(courseId);
 
         if (deleted) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 - Course deleted successfully
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // 404 - Course not found
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -69,7 +69,7 @@ public class CourseController {
             Course updatedCourse = courseService.updateCourse(courseId, partialCourse);
             return new ResponseEntity<>(updatedCourse, HttpStatus.OK);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // If course not found
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
         }
     }
 
@@ -80,14 +80,14 @@ public class CourseController {
 
         if (foundCourse.isPresent()) {
             Course courseToPublish = foundCourse.get();
-            courseToPublish.setPublished(true); // Set the course as published
-            courseToPublish.setUpdatedAt(LocalDateTime.now()); // Update the timestamp
+            courseToPublish.setPublished(true);
+            courseToPublish.setUpdatedAt(LocalDateTime.now());
 
             // Save the updated course
             Course updatedCourse = courseService.saveCourse(courseToPublish);
             return new ResponseEntity<>(updatedCourse, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Course not found
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
