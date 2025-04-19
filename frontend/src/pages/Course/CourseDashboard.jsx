@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CourseForm from "./CourseForm";
+import "../../css/Course/CourseDashboard.css";
 
 const CourseDashboard = () => {
   const [myCourses, setMyCourses] = useState([]);
@@ -61,7 +62,7 @@ const CourseDashboard = () => {
   };
 
   return (
-    <div>
+    <div className="course-dashboard">
       <h1>My Course Dashboard</h1>
       <button
         onClick={() => {
@@ -86,6 +87,7 @@ const CourseDashboard = () => {
       ) : (
         myCourses.map((course) => (
           <div
+          className="course-card"
             key={course.courseId}
             style={{
               border: "1px solid #ccc",
@@ -100,11 +102,11 @@ const CourseDashboard = () => {
               <strong>{course.isPublished ? "Published" : "Draft"}</strong>
             </p>
 
-            <button onClick={() => handleEdit(course)}>✏️ Edit</button>
-            <button onClick={() => handleDelete(course.courseId)}>
+            <button className="edit-btn" onClick={() => handleEdit(course)}>✏️ Edit</button>
+            <button className="delete-tn" onClick={() => handleDelete(course.courseId)}>
               🗑️ Delete
             </button>
-            <button onClick={() => handlePublishToggle(course)}>
+            <button className="publish-btn" onClick={() => handlePublishToggle(course)}>
               {course.isPublished ? "📥 Unpublish" : "📤 Publish"}
             </button>
           </div>
