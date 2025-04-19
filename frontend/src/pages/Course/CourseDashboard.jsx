@@ -1,5 +1,5 @@
 import React from "react";
-import CourseForm from "../../components/Course/CourseForm";
+import CourseForm from "../../components/Course/Course_From";
 import CourseList from "../../components/Course/CourseList";
 import MyCourses from "../../components/Course/MyCourses";
 import EnrolledCourses from "../../components/Course/EnrolledCourses";

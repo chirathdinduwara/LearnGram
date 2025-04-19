@@ -1,7 +1,7 @@
 import React from "react";
 import CourseDashboard from "../pages/Course/CourseDashboard";
 import CourseList from "../components/Course/CourseList";
-import CourseForm from "../components/Course/CourseForm";
+import CourseForm from "../components/Course/Course_From";
 import MyCourses from "../components/Course/MyCourses";
 import EnrolledCourses from "../components/Course/EnrolledCourses";
 
