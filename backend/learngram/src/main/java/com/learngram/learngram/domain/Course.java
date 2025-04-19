@@ -1,12 +1,13 @@
 package com.learngram.learngram.domain;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -14,31 +15,24 @@ import java.util.List;
 @Builder
 @Document(collection = "course")
 public class Course {
-
     @Id
     private String courseId;
-
     private String title;
-
     private String description;
-
-    private List<String> content; // List of content items (could be URLs, texts, etc.)
-
-    private boolean isPublished;
-
+    private List<String> content;
+    private String createdBy;
+    private List<String> enrolledUsers;
     private LocalDateTime createdAt;
-
     private LocalDateTime updatedAt;
 
-    private String createdBy; // User ID (since we're storing the ID of the user who created the course)
-
     public Course() {
-        // Default constructor for MongoDB
+        this.content = new ArrayList<>();
+        this.enrolledUsers = new ArrayList<>();
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
-    // Optionally, you can add methods to handle automatic timestamps here (e.g., @PrePersist) if needed
-    public void setTimestamps() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = this.createdAt;
+    public void updateTimestamps() {
+        this.updatedAt = LocalDateTime.now();
     }
 }

@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -21,15 +19,13 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course saveCourse(Course course) {
-        course.setTimestamps();
+        course.updateTimestamps();
         return courseRepository.save(course);
     }
 
     @Override
     public List<Course> getAllCourses() {
-        return StreamSupport.stream(
-            courseRepository.findAll().spliterator(), false)
-            .collect(Collectors.toList());
+        return courseRepository.findAll();
     }
 
     @Override
@@ -38,8 +34,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public boolean deleteCourse(String courseId) {
-        if (courseRepository.existsById(courseId)) {
+    public boolean deleteCourse(String courseId, String userId) {
+        Optional<Course> courseOpt = courseRepository.findById(courseId);
+        if (courseOpt.isPresent() && courseOpt.get().getCreatedBy().equals(userId)) {
             courseRepository.deleteById(courseId);
             return true;
         }
@@ -47,32 +44,41 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course updateCourse(String courseId, Course updatedCourse) {
-        Optional<Course> existingCourseOpt = courseRepository.findById(courseId);
-        
-        if (existingCourseOpt.isPresent()) {
-            Course existingCourse = existingCourseOpt.get();
+    public Course updateCourse(String courseId, Course updatedCourse, String userId) {
+        return courseRepository.findById(courseId).map(course -> {
+            if (!course.getCreatedBy().equals(userId)) {
+                throw new RuntimeException("Unauthorized");
+            }
 
-            
-            if (updatedCourse.getTitle() != null) {
-                existingCourse.setTitle(updatedCourse.getTitle());
-            }
-            if (updatedCourse.getDescription() != null) {
-                existingCourse.setDescription(updatedCourse.getDescription());
-            }
-            if (updatedCourse.getContent() != null) {
-                existingCourse.setContent(updatedCourse.getContent());
-            }
-            existingCourse.setUpdatedAt(updatedCourse.getUpdatedAt()); // Always update the timestamp
+            if (updatedCourse.getTitle() != null) course.setTitle(updatedCourse.getTitle());
+            if (updatedCourse.getDescription() != null) course.setDescription(updatedCourse.getDescription());
+            if (updatedCourse.getContent() != null) course.setContent(updatedCourse.getContent());
 
-            return courseRepository.save(existingCourse);
-        } else {
-            throw new RuntimeException("Course not found with ID: " + courseId);
-        }
+            course.updateTimestamps();
+            return courseRepository.save(course);
+        }).orElseThrow(() -> new RuntimeException("Course not found"));
     }
 
     @Override
-    public List<Course> getPublishedCourses() {
-        return courseRepository.findByIsPublished(true);
+    public List<Course> getCoursesByUser(String userId) {
+        return courseRepository.findByCreatedBy(userId);
+    }
+
+    @Override
+    public List<Course> getEnrolledCourses(String userId) {
+        return courseRepository.findByEnrolledUsersContaining(userId);
+    }
+
+    @Override
+    public Course enrollInCourse(String courseId, String userId) {
+        return courseRepository.findById(courseId).map(course -> {
+            if (!course.getEnrolledUsers().contains(userId)) {
+                course.getEnrolledUsers().add(userId);
+                course.updateTimestamps();
+                return courseRepository.save(course);
+            } else {
+                return course;
+            }
+        }).orElseThrow(() -> new RuntimeException("Course not found"));
     }
 }

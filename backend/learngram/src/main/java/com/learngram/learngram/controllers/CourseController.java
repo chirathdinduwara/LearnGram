@@ -2,17 +2,14 @@ package com.learngram.learngram.controllers;
 
 import com.learngram.learngram.domain.Course;
 import com.learngram.learngram.services.CourseService;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
-@CrossOrigin(origins = "*")
 @RestController
+@CrossOrigin("*")
+@RequestMapping("/courses")
 public class CourseController {
 
     private final CourseService courseService;
@@ -21,81 +18,60 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    // Create a new course
-    @PostMapping(path = "/courses")
+    @PostMapping
     public ResponseEntity<Course> createCourse(@RequestBody Course course) {
-        course.setTimestamps();
-        Course savedCourse = courseService.saveCourse(course);
-        return new ResponseEntity<>(savedCourse, HttpStatus.CREATED);
+        Course saved = courseService.saveCourse(course);
+        return ResponseEntity.status(201).body(saved);
     }
 
-    // List all courses
-    @GetMapping(path = "/courses")
-    public List<Course> listCourses() {
-        List<Course> courses = courseService.getAllCourses();
-        return courses;
+    @GetMapping
+    public List<Course> getAllCourses() {
+        return courseService.getAllCourses();
     }
 
-    // Get a specific course by ID
-    @GetMapping(path = "/courses/{courseId}")
-    public ResponseEntity<Course> getCourse(@PathVariable("courseId") String courseId) {
-        Optional<Course> foundCourse = courseService.getCourseById(courseId);
-
-        if (foundCourse.isPresent()) {
-            return new ResponseEntity<>(foundCourse.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping("/my")
+    public List<Course> getMyCourses(@RequestParam String userId) {
+        return courseService.getCoursesByUser(userId);
     }
 
-    // Delete a course by ID
-    @DeleteMapping(path = "/courses/{courseId}")
-    public ResponseEntity<Void> deleteCourse(@PathVariable("courseId") String courseId) {
-        boolean deleted = courseService.deleteCourse(courseId);
-
-        if (deleted) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @GetMapping("/enrolled")
+    public List<Course> getEnrolledCourses(@RequestParam String userId) {
+        return courseService.getEnrolledCourses(userId);
     }
 
-    // Update a course (partial update)
-    @PatchMapping(path = "/courses/{courseId}")
-    public ResponseEntity<Course> patchCourse(
-            @PathVariable("courseId") String courseId,
-            @RequestBody Course partialCourse) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Course> getCourseById(@PathVariable String id) {
+        return courseService.getCourseById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCourse(@PathVariable String id, @RequestParam String userId) {
+        boolean deleted = courseService.deleteCourse(id, userId);
+        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.status(403).build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Course> updateCourse(@PathVariable String id,
+                                               @RequestParam String userId,
+                                               @RequestBody Course course) {
         try {
-            Course updatedCourse = courseService.updateCourse(courseId, partialCourse);
-            return new ResponseEntity<>(updatedCourse, HttpStatus.OK);
+            Course updated = courseService.updateCourse(id, course, userId);
+            return ResponseEntity.ok(updated);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); 
+            return ResponseEntity.status(403).build();
         }
     }
 
-    // Publish a course
-    @PatchMapping(path = "/courses/{courseId}/publish")
-    public ResponseEntity<Course> publishCourse(@PathVariable("courseId") String courseId) {
-        Optional<Course> foundCourse = courseService.getCourseById(courseId);
-
-        if (foundCourse.isPresent()) {
-            Course courseToPublish = foundCourse.get();
-            courseToPublish.setPublished(true);
-            courseToPublish.setUpdatedAt(LocalDateTime.now());
-
-            // Save the updated course
-            Course updatedCourse = courseService.saveCourse(courseToPublish);
-            return new ResponseEntity<>(updatedCourse, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @PostMapping("/{id}/enroll")
+    public ResponseEntity<Course> enrollInCourse(@PathVariable String id,
+                                                 @RequestParam String userId) {
+        try {
+            Course enrolled = courseService.enrollInCourse(id, userId);
+            return ResponseEntity.ok(enrolled);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
         }
-    }
-
-    // Get all published courses
-    @GetMapping(path = "/courses/published")
-    public ResponseEntity<List<Course>> getPublishedCourses() {
-        List<Course> publishedCourses = courseService.getPublishedCourses();
-        return new ResponseEntity<>(publishedCourses, HttpStatus.OK);
     }
 }

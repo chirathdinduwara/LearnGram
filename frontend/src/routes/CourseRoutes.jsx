@@ -1,12 +1,13 @@
 import React from "react";
-import CourseList from "../components/Course/CourseList";
-import CourseForm from "../pages/Course/CourseForm";
-import CourseDetail from "../components/Course/CourseDetail";
 import CourseDashboard from "../pages/Course/CourseDashboard";
+import CourseList from "../components/Course/CourseList";
+import CourseForm from "../components/Course/CourseForm";
+import MyCourses from "../components/Course/MyCourses";
+import EnrolledCourses from "../components/Course/EnrolledCourses";
 
 export default [
   {
-    path: "/courseDashboard",
+    path: "/Course-Dashboard",
     element: <CourseDashboard />,
   },
   {
@@ -14,15 +15,15 @@ export default [
     element: <CourseList />,
   },
   {
-    path: "/courses/add",
+    path: "/courses/create",
     element: <CourseForm />,
   },
   {
-    path: "/courses/:courseId",
-    element: <CourseDetail />,
+    path: "/my-courses",
+    element: <MyCourses />,
   },
   {
-    path: "/courses/edit/:courseId",
-    element: <CourseForm />,
+    path: "/enrolled",
+    element: <EnrolledCourses />,
   },
 ];

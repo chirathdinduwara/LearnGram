@@ -1,0 +1,73 @@
+/* Container Styling */
+.course-form-container {
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  width: 100%;
+}
+
+/* Title Styling */
+.course-form h3 {
+  color: #fff;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Input and Textarea Styling */
+.course-form-input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  background-color: #2c2c2c;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 16px;
+  resize: none;
+}
+
+.course-form-input::placeholder {
+  color: #aaa;
+}
+
+/* Add Content Button */
+.add-content-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #333;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-content-btn:hover {
+  background-color: #555;
+}
+
+/* Submit Button */
+.course-create-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #ff6f61;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.course-create-btn:hover {
+  background-color: #ff3f2d;
+}
+
