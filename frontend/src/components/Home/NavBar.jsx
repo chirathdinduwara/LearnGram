@@ -28,7 +28,7 @@ function NavBar() {
                 <li className="nav-item"><Link className="nav-item" to="/"><CgHome size={25} />Home</Link></li>
                 <li className="nav-item"><Link className="nav-item" to="/"><CgSearch size={25} />Search</Link></li>
                 <li className="nav-item"><Link className="nav-item" to="/reel"><CgCamera size={25} />Videos</Link></li>
-                <li className="nav-item"><Link className="nav-item" to="/"><CgNotes size={25} />Courses</Link></li>
+                <li className="nav-item"><Link className="nav-item" to="/Course-Dashboard"><CgNotes size={25} />Courses</Link></li>
                 <li className="nav-item create-container" onClick={toggleCreateDropdown} style={{ position: "relative", cursor: "pointer" }}>
                     <CgMathPlus size={25} /> Create
                     {isCreateDropdownOpen && (
