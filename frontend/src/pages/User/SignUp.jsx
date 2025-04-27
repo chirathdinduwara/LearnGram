@@ -12,34 +12,7 @@ function SignUp() {
 
   const [userData, setUserData] = useState(null); 
 
-  const handleLoginSuccess = async (credentialResponse) => {
-    if (credentialResponse.credential) {
-      const decoded = jwtDecode(credentialResponse.credential);
-      console.log("User Details:", decoded);
-  
-      try {
-        const userData = decoded;
-        setUserData(userData);
-        
-        await axios.post('http://localhost:8080/api/users/google', {
-          name: userData.name,
-          email: userData.email,
-          imageUrl: userData.picture,
-        });
-  
 
-        localStorage.setItem('userEmail', userData.email);
-  
-      } catch (error) {
-        console.error("Error while saving user data:", error);
-      }
-    }
-  };
-  
-
-  const handleLoginError = () => {
-    console.log('Login Failed');
-  };
 
   return (
     <div className="login-container">
@@ -47,23 +20,16 @@ function SignUp() {
         <div className="login-form-up">
           <h1 className="logo">LearnGram</h1>
           <div className="inputs-sec">
+            <input type="text" placeholder="Ente Name" className="input-login"/>
             <input type="email" placeholder="Enter Email" className="login-input" />
             <input type="password" placeholder="Password" className="login-input" />
           </div>
-          <button className="log-in-btn" type="submit">Log In</button>
-          <p className="or">OR</p>
-          <GoogleLogin 
-            onSuccess={handleLoginSuccess} 
-            onError={handleLoginError}
-            theme="filled_black"  
-            size="large"          
-            text="signin_with"     
-            shape="pill"    />
+          <button className="log-in-btn" type="submit">Sign Up</button>
 
         </div>
         <div className="login-form-down">
           <hr />
-          <p className="sign-up-link">Don't have an account ? <span style={{color: "blue"}}>Sign Up</span></p>
+          <p className="sign-up-link">Already have an account ? <span style={{color: "blue"}}>Log In</span></p>
         </div>
       </div>
     </div>
