@@ -5,7 +5,7 @@ import CourseForm from "../components/Course/Course_From";
 import MyCourses from "../components/Course/MyCourses";
 import EnrolledCourses from "../components/Course/EnrolledCourses";
 
-export default [
+const CourseRoutes = [
   {
     path: "/Course-Dashboard",
     element: <CourseDashboard />,
@@ -27,3 +27,5 @@ export default [
     element: <EnrolledCourses />,
   },
 ];
+
+export default CourseRoutes;

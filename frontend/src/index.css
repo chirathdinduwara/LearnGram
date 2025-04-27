@@ -3,6 +3,7 @@
 @import url("../src/css/Story/story.css");
 @import url("../src/css/Post/Post.css");
 @import url("../src/css/video/reel.css");
+@import url("../src/css/User/login.css");
 
 * {
   --main-bg: #000000;
