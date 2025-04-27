@@ -14,6 +14,9 @@ function Login() {
 
   const handleLoginSuccess = async (credentialResponse) => {
     if (credentialResponse.credential) {
+      const token = credentialResponse.credential;
+      console.log("JWT Token:", token); 
+
       const decoded = jwtDecode(credentialResponse.credential);
       console.log("User Details:", decoded);
   
@@ -27,7 +30,7 @@ function Login() {
           imageUrl: userData.picture,
         });
   
-
+        localStorage.setItem('userTocken', token);
         localStorage.setItem('userEmail', userData.email);
         navigate("/");
   
