@@ -3,6 +3,7 @@ import CourseRoutes from "./CourseRoutes";
 import HomeRoutes from "./HomeRoutes"
 import LoginRoutes from "./LoginRoutes";
 import PostRoutes from "./PostRoutes";
+import ProfileRoutes from "./ProfileRoutes";
 
 
 const router = [
@@ -12,7 +13,8 @@ const router = [
         children: [
             ...HomeRoutes,
             ...CourseRoutes,
-            ...PostRoutes
+            ...PostRoutes,
+            ...ProfileRoutes
         ]
     },
     {
