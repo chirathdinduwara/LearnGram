@@ -98,7 +98,7 @@ function NavBar() {
             {isCreateDropdownOpen && (
               <ul className="dropdown-menu">
                 <li className="nav-item">
-                  <Link className="nav-item" to="/">
+                  <Link className="nav-item" to="/courses/create">
                     Create Course <CgFileDocument size={20} />
                   </Link>
                 </li>
