@@ -1,33 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { getAllCourses } from "./CourseServices";
+import { getAllCourses, enrollCourse } from "./CourseServices";
+import CourseCard from "./CourseCard";
 
-const CourseList = () => {
+function AllCourses() {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    getAllCourses().then((res) => setCourses(res.data));
+    fetchAll();
   }, []);
 
-  return (
-    <>
-      <h2>All Courses</h2>
-      {courses.map((course) => (
-        <div key={course.courseId}>
-          <h3>{course.title}</h3>
-          <p>{course.description}</p>
-          <ul>
-            {course.content.map((item, i) => (
-              <li key={i}>
-                <a href={item} target="_blank">
-                  {item}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </>
-  );
-};
+  const fetchAll = async () => {
+    const response = await getAllCourses();
+    setCourses(response.data);
+  };
 
-export default CourseList;
+  const handleEnroll = async (courseId) => {
+    await enrollCourse(courseId, "userId123");
+    alert("Enrolled Successfully!");
+  };
+
+  return (
+    <div>
+      <h1>All Courses</h1>
+      {courses.map((course) => (
+        <CourseCard
+          key={course.courseId}
+          course={course}
+          onEnroll={handleEnroll}
+        />
+      ))}
+    </div>
+  );
+}
+
+export default AllCourses;

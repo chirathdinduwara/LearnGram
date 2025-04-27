@@ -2,17 +2,14 @@ package com.learngram.learngram.controllers;
 
 import com.learngram.learngram.domain.Course;
 import com.learngram.learngram.services.CourseService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:5173")
-@RestController
+@RestController 
 @RequestMapping("/courses")
 public class CourseController {
 
@@ -22,114 +19,53 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    // Handle Course Creation with File Uploads
     @PostMapping
-public ResponseEntity<Course> createCourse(
-        @RequestParam String title,
-        @RequestParam String description,
-        @RequestParam String createdBy,
-        @RequestParam(required = false) List<String> contentTexts,
-        @RequestParam(required = false) List<MultipartFile> contentFiles
-) {
-    List<Course.Content> combinedContent = new ArrayList<>();
-
-    // Add text content to list
-    if (contentTexts != null) {
-        for (String text : contentTexts) {
-            combinedContent.add(new Course.Content("text", text));
-        }
+    public ResponseEntity<Course> createCourse(@RequestBody Course course) {
+        Course created = courseService.createCourse(course);
+        return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
-
-    // Handle image files and store them (store in backend folder)
-    if (contentFiles != null) {
-        String uploadDir = "uploads"; // Make sure this is an actual path on the server
-
-        // Create directory if it doesn't exist
-        File directory = new File(uploadDir);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
-
-        for (MultipartFile file : contentFiles) {
-            if (!file.isEmpty()) {
-                // Generate a unique filename to avoid conflicts
-                String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-                String filePath = uploadDir + File.separator + fileName; // Use File.separator for cross-platform compatibility
-                File fileToSave = new File(filePath);
-
-                try {
-                    file.transferTo(fileToSave); // Save the file to disk
-                    combinedContent.add(new Course.Content("image", filePath)); // Add the file path
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return ResponseEntity.status(500).body(null); // Return error if file transfer fails
-                }
-            }
-        }
-    }
-
-    // Create the course object
-    Course course = Course.builder()
-            .title(title)
-            .description(description)
-            .createdBy(createdBy)
-            .content(combinedContent)
-            .build();
-
-    // Save the course to the database
-    Course saved = courseService.saveCourse(course);
-    return ResponseEntity.status(201).body(saved); // Return the saved course
-}
-
 
     @GetMapping
     public List<Course> getAllCourses() {
         return courseService.getAllCourses();
     }
 
-    @GetMapping("/my")
-    public List<Course> getMyCourses(@RequestParam String userId) {
+    @GetMapping("/user/{userId}")
+    public List<Course> getCoursesByUser(@PathVariable String userId) {
         return courseService.getCoursesByUser(userId);
     }
 
-    @GetMapping("/enrolled")
-    public List<Course> getEnrolledCourses(@RequestParam String userId) {
-        return courseService.getEnrolledCourses(userId);
+    @GetMapping("/{courseId}")
+    public ResponseEntity<Course> getCourseById(@PathVariable String courseId) {
+        Optional<Course> course = courseService.getCourseById(courseId);
+        return course.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Course> getCourseById(@PathVariable String id) {
-        return courseService.getCourseById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCourse(@PathVariable String id, @RequestParam String userId) {
-        boolean deleted = courseService.deleteCourse(id, userId);
-        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.status(403).build();
-    }
-
-    @PatchMapping("/{id}")
-    public ResponseEntity<Course> updateCourse(@PathVariable String id,
-                                               @RequestParam String userId,
-                                               @RequestBody Course course) {
+    @PatchMapping("/{courseId}")
+    public ResponseEntity<Course> updateCourse(@PathVariable String courseId, @RequestBody Course course) {
         try {
-            Course updated = courseService.updateCourse(id, course, userId);
-            return ResponseEntity.ok(updated);
+            Course updated = courseService.updateCourse(courseId, course);
+            return new ResponseEntity<>(updated, HttpStatus.OK);
         } catch (RuntimeException e) {
-            return ResponseEntity.status(403).build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PostMapping("/{id}/enroll")
-    public ResponseEntity<Course> enrollInCourse(@PathVariable String id,
-                                                 @RequestParam String userId) {
+    @DeleteMapping("/{courseId}")
+    public ResponseEntity<Void> deleteCourse(@PathVariable String courseId) {
+        boolean deleted = courseService.deleteCourse(courseId);
+        return deleted ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                       : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/{courseId}/enroll/{userId}")
+    public ResponseEntity<Course> enrollInCourse(@PathVariable String courseId, @PathVariable String userId) {
         try {
-            Course enrolled = courseService.enrollInCourse(id, userId);
-            return ResponseEntity.ok(enrolled);
+            Course enrolledCourse = courseService.enrollInCourse(courseId, userId);
+            return new ResponseEntity<>(enrolledCourse, HttpStatus.OK);
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }
