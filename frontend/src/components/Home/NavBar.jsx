@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 
 function NavBar() {
   const [isCreateDropdownOpen, setIsCreateDropdownOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const toggleCreateDropdown = () => {
     setIsCreateDropdownOpen((prev) => !prev);
@@ -27,6 +28,36 @@ function NavBar() {
     document.addEventListener("click", handleOutsideClick);
     return () => document.removeEventListener("click", handleOutsideClick);
   }, []);
+
+  useEffect(() => {
+    const userEmail = localStorage.getItem("userEmail");
+    setIsLoggedIn(!!userEmail);
+  }, []);
+
+  // useEffect(() => {
+  //     if (isLoggedIn) {
+  //         const fetchUserData = async () => {
+  //             try {
+
+  //                 const userEmail = localStorage.getItem('userEmail');
+  //                 const response = await axios.get(`http://localhost:8080/api/users/${userEmail}`);
+
+  //                 setUserData(response.data);
+
+  //                 console.log("User data fetched:", response.data);
+  //             } catch (error) {
+  //                 console.error("Error while fetching user data:", error);
+  //             }
+  //         };
+
+  //         fetchUserData();
+  //     }
+  // }, [isLoggedIn]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("userEmail");
+    setIsLoggedIn(false);
+  };
 
   return (
     <>
@@ -57,6 +88,7 @@ function NavBar() {
               Courses
             </Link>
           </li>
+
           <li
             className="nav-item create-container"
             onClick={toggleCreateDropdown}
@@ -66,41 +98,52 @@ function NavBar() {
             {isCreateDropdownOpen && (
               <ul className="dropdown-menu">
                 <li className="nav-item">
-                  <Link className="nav-item" to="/courses/create">
-                    {" "}
-                    Create Course <CgFileDocument size={20} />{" "}
-                  </Link>{" "}
+                  <Link className="nav-item" to="/">
+                    Create Course <CgFileDocument size={20} />
+                  </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-item" to="/gg">
-                    {" "}
-                    Create Post <CgImage size={20} />{" "}
-                  </Link>{" "}
+                    Create Post <CgImage size={20} />
+                  </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-item" to="/">
-                    {" "}
-                    Upload Video <CgCamera size={20} />{" "}
-                  </Link>{" "}
+                    Upload Video <CgCamera size={20} />
+                  </Link>
                 </li>
               </ul>
             )}
           </li>
-          <li className="nav-item">
-            <Link className="nav-item" to="/">
-              <img
-                src="https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg"
-                alt="Default Avatar"
-                style={{ width: "30px", height: "30px", borderRadius: "100px" }}
-              />
-              Profile
-            </Link>
-          </li>
+
+          {isLoggedIn && (
+            <li className="nav-item">
+              <Link className="nav-item" to="/profile">
+                <img
+                  src={""}
+                  alt="Default Avatar"
+                  style={{
+                    width: "30px",
+                    height: "30px",
+                    borderRadius: "100px",
+                  }}
+                />
+                Profile
+              </Link>
+            </li>
+          )}
         </ul>
 
         <div className="nav-actions">
-          <button className="log-out">Log Out</button>
-          <button className="log-in">Log In</button>
+          {isLoggedIn ? (
+            <button className="log-out" onClick={handleLogout}>
+              Log Out
+            </button>
+          ) : (
+            <Link to="/login">
+              <button className="log-in">Log In</button>
+            </Link>
+          )}
         </div>
       </nav>
     </>
