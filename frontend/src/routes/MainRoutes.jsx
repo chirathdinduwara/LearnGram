@@ -2,6 +2,7 @@ import App from "../App"
 import CourseRoutes from "./CourseRoutes";
 import HomeRoutes from "./HomeRoutes"
 import LoginRoutes from "./LoginRoutes";
+import PostRoutes from "./PostRoutes";
 
 
 const router = [
@@ -10,13 +11,14 @@ const router = [
         element: <App />,
         children: [
             ...HomeRoutes,
-            ...CourseRoutes
+            ...CourseRoutes,
+            ...PostRoutes
         ]
     },
     {
         path: '/',
         children: [
-            ...LoginRoutes
+            ...LoginRoutes,
         ]
     }
 ]

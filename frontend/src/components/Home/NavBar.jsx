@@ -13,6 +13,8 @@ import { Link } from "react-router-dom";
 function NavBar() {
   const [isCreateDropdownOpen, setIsCreateDropdownOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [pic, setImage] = useState();
+
 
   const toggleCreateDropdown = () => {
     setIsCreateDropdownOpen((prev) => !prev);
@@ -34,25 +36,11 @@ function NavBar() {
     setIsLoggedIn(!!userEmail);
   }, []);
 
-  // useEffect(() => {
-  //     if (isLoggedIn) {
-  //         const fetchUserData = async () => {
-  //             try {
-
-  //                 const userEmail = localStorage.getItem('userEmail');
-  //                 const response = await axios.get(`http://localhost:8080/api/users/${userEmail}`);
-
-  //                 setUserData(response.data);
-
-  //                 console.log("User data fetched:", response.data);
-  //             } catch (error) {
-  //                 console.error("Error while fetching user data:", error);
-  //             }
-  //         };
-
-  //         fetchUserData();
-  //     }
-  // }, [isLoggedIn]);
+  useEffect(() => {
+      if (isLoggedIn) {
+        setImage(localStorage.getItem("userImage"))
+      }
+  }, [isLoggedIn]);
 
   const handleLogout = () => {
     localStorage.removeItem("userEmail");
@@ -103,7 +91,7 @@ function NavBar() {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-item" to="/gg">
+                  <Link className="nav-item" to="/createPost">
                     Create Post <CgImage size={20} />
                   </Link>
                 </li>
@@ -120,7 +108,7 @@ function NavBar() {
             <li className="nav-item">
               <Link className="nav-item" to="/profile">
                 <img
-                  src={""}
+                  src={pic}
                   alt="Default Avatar"
                   style={{
                     width: "30px",
