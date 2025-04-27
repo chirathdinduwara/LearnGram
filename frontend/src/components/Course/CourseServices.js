@@ -9,6 +9,7 @@ export const getAllCourses = () => API.get('/courses');
 export const enrollCourse = (courseId, userId) => API.post(`/courses/${courseId}/enroll/${ userId }`);
 export const getEnrolledCourses = (userId) => API.get(`/courses/enrolled/${userId}`);
 export const updateCourse = (courseId, updatedData) => API.patch(`/courses/${courseId}`, updatedData);
+export const deleteCourse = (courseId) => API.patch(`/courses/${courseId}`);
 
 /*
 Create Course = http://localhost:8080/courses

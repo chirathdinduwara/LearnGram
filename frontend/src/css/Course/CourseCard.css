@@ -1,93 +1,115 @@
 .course-card {
-    display: flex;
-    background-color: #1e1e1e;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    width: 1150px;
-    height: 300px;
-    margin: 10px;
-    color: white;
-    font-family: "Arial", sans-serif;
-    transition: transform 0.3s ease;
-    flex-direction: column;
-  }
-  
-  .course-card:hover {
-    transform: translateY(-2px);
-  }
-  
-  .course-card__content {
-    display: flex;
-    padding: 15px;
-    align-items: center;
-    flex-grow: 1;
-  }
+  display: flex;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  width: 1150px;
+  height: 300px;
+  margin: 10px;
+  color: white;
+  font-family: "Arial", sans-serif;
+  transition: transform 0.3s ease;
+  flex-direction: column;
+}
 
-  
-  .course-card__details p {
-    margin-top: -10px;
-  }
-  
-  .course-card__image {
-    height: 260px;
-    margin-right: 20px;
-    overflow: hidden;
-    position: relative;
-    border-radius: 8px;
-  }
-  
-  .course-card__image-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: opacity 0.3s ease;
-  }
-  
-  .course-card__image:hover .course-card__image-img {
-    opacity: 0.8;
-  }
-  
-  .course-card__details {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .course-card__title {
-    font-size: 1.6em;
-    color: white;
-    margin-bottom: 10px;
-    font-weight: 600;
-  }
-  
-  .course-card__description {
-    font-size: 1em;
-    margin-bottom: 15px;
-  }
-  
-  .course-card__text {
-    font-size: 0.95em;
-    margin-bottom: 8px;
-  }
-  
-  .course-card__enroll-button {
-    background-color: #409cff;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    font-size: 1em;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    margin-top: auto; /* Pushes button to the bottom */
-  }
-  
-  .course-card__enroll-button:hover {
-    background-color: #0160b4;
-    transform: scale(1.05);
-  }
-  
-  .course-card__enroll-button:focus {
-    outline: none;
-  }
-  
+.course-card:hover {
+  transform: translateY(-2px);
+}
+
+.course-card__content {
+  display: flex;
+  padding: 15px;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.course-card__details p {
+  margin-top: -10px;
+}
+
+.course-card__image {
+  height: 260px;
+  margin-right: 20px;
+  overflow: hidden;
+  position: relative;
+  border-radius: 8px;
+}
+
+.course-card__image-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+
+.course-card__image:hover .course-card__image-img {
+  opacity: 0.8;
+}
+
+.course-card__details {
+  display: flex;
+  flex-direction: column;
+}
+
+.course-card__title {
+  font-size: 1.6em;
+  color: white;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.course-card__description {
+  font-size: 1em;
+  margin-bottom: 15px;
+}
+
+.course-card__text {
+  font-size: 0.95em;
+  margin-bottom: 8px;
+}
+
+.course-card__enroll-button {
+  background-color: #409cff;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1em;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-top: auto; /* Pushes button to the bottom */
+}
+
+.course-card__enroll-button:hover {
+  background-color: #0160b4;
+  transform: scale(1.05);
+}
+
+.course-card__enroll-button:focus {
+  outline: none;
+}
+
+.delete-c-btn {
+  position: absolute;
+  top: 230px;
+  left: 1420px;
+  background-color: rgb(250, 67, 67);
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  transition: 0.4s ease;
+}
+
+.delete-c-btn:hover {
+  background-color: rgb(255, 0, 0);
+}
+
+.delete-c-icon {
+  color: white;
+  font-size: 25px;
+  transition: 0.4s ease;
+}
