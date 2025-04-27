@@ -1,11 +1,17 @@
 package com.learngram.learngram.controllers;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.learngram.learngram.domain.Course;
 import com.learngram.learngram.services.CourseService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,10 +19,33 @@ import java.util.Optional;
 @RequestMapping("/courses")
 public class CourseController {
 
+    @Autowired
+    private Cloudinary cloudinary;
+
     private final CourseService courseService;
 
     public CourseController(CourseService courseService) {
         this.courseService = courseService;
+    }
+
+     @PostMapping("/CourseImage")
+    public ResponseEntity<String> uploadImage(@RequestParam("image") MultipartFile file) {
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("No file selected to upload.");
+        }
+
+        try {
+            // Upload image to Cloudinary
+            var uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+
+            // Get the URL of the uploaded image
+            String fileUrl = (String) uploadResult.get("url");
+
+            return ResponseEntity.ok(fileUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Failed to upload image: " + e.getMessage());
+        }
     }
 
     @PostMapping

@@ -1,26 +1,44 @@
-import React from 'react';
+import React from "react";
+import "../../css/Course/CourseCard.css";
 
 function CourseCard({ course, onEnroll, showEnroll = true }) {
   return (
-    <div style={{ border: '1px solid gray', padding: '10px', margin: '10px' }}>
-      <h2>{course.title}</h2>
-      <p>{course.description}</p>
-
-      {course.content.map((c, index) => (
-        <div key={index}>
-          {c.type === 'text' ? (
-            <p>{c.value}</p>
-          ) : (
-            <img src={c.value} alt="Course content" width="200" />
+    <div className="course-card">
+      <div className="course-card__content">
+        <div className="course-card__image">
+          {course.content.map(
+            (c, index) =>
+              c.type === "image" && (
+                <img
+                  key={index}
+                  src={c.value}
+                  alt="Course content"
+                  className="course-card__image-img"
+                />
+              )
           )}
         </div>
-      ))}
-
-      {showEnroll && (
-        <button onClick={() => onEnroll(course.courseId)}>
-          Enroll
-        </button>
-      )}
+        <div className="course-card__details">
+          <h2 className="course-card__title">{course.title}</h2>
+          <p className="course-card__description">{course.description}</p>
+          {course.content.map(
+            (c, index) =>
+              c.type === "text" && (
+                <p key={index} className="course-card__text">
+                  {c.value}
+                </p>
+              )
+          )}
+          {showEnroll && (
+            <button
+              className="course-card__enroll-button"
+              onClick={() => onEnroll(course.courseId)}
+            >
+              Enroll
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

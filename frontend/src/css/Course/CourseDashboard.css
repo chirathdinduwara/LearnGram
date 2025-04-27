@@ -1,8 +1,8 @@
-:root {
+/* :root {
   --primary: #ff6ec4;
   --secondary: #7873f5;
   --background: #f9f9f9;
-  --card-bg: #ffffff;
+  --card-bg: #b01616;
   --text-dark: #2e2e2e;
   --text-light: #8a8a8a;
   --border-color: #eaeaea;
@@ -98,7 +98,7 @@ hr {
   border: none;
   border-top: 1px solid var(--border-color);
   margin: 40px 0;
-}
+} */
 
 .dashboard-sections {
   padding: 2rem;
