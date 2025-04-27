@@ -6,7 +6,7 @@ function Post({img, profile, caption, location, name}) {
             <div className="post">
                 <div className="post-header">
                 <img
-                    src={"https://lh3.googleusercontent.com/a/ACg8ocIbM8HuQ6RN5UdaNpWw1wLtBSqZPhFl7oTsVPNmvAY5VFlUxH7C=s96-c"}
+                    src={profile}
                     alt="Default Avatar"
                     className="story-profile"
                     style={{width: "40px", }}

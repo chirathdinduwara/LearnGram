@@ -18,12 +18,11 @@ function PostList() {
         fetchPosts();
     }, []);
 
-    console.log(posts);
 
     return (
         <>
             <div className="postList">
-                {posts.slice().reverse().map((post) => ( // Using slice() to create a copy of the posts array
+                {posts.slice().reverse().map((post) => (
                     <Post
                         key={post.id}
                         img={post.contentUrl}

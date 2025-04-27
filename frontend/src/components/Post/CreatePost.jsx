@@ -10,6 +10,7 @@ function CreatePost() {
     const navigate = useNavigate();
     const userId = localStorage.getItem("userEmail");
     const userName = localStorage.getItem("userName");
+    const userProfileImage = localStorage.getItem("userImage");
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -23,6 +24,7 @@ function CreatePost() {
     };
 
     const handleSubmit = async (e) => {
+
         e.preventDefault();
 
         if (!caption || !location) {
@@ -53,7 +55,9 @@ function CreatePost() {
                 userName,
                 contentUrl,
                 caption,
+                userProfileImage,
                 location
+                
             });
 
             // Redirect after successful post

@@ -1,15 +1,10 @@
 package com.learngram.learngram.controllers;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
-import java.nio.file.Path;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.learngram.learngram.domain.Post;
 import com.learngram.learngram.services.PostService;
 
@@ -31,39 +28,31 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RestController
 public class PostContoller {
 
-    @Autowired
-    private Environment environment;
 
     private PostService postService;
 
+    @Autowired
+    private Cloudinary cloudinary;
+
     @PostMapping("/image")
     public ResponseEntity<String> uploadImage(@RequestParam("image") MultipartFile file) {
-    String uploadDir = environment.getProperty("upload.directory");
-
-    if (file.isEmpty()) {
-        return ResponseEntity.badRequest().body("No file selected to upload.");
-    }
-
-    try {
-   
-        Path uploadPath = Paths.get(uploadDir);
-        if (!Files.exists(uploadPath)) {
-            Files.createDirectories(uploadPath);
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("No file selected to upload.");
         }
 
-        String fileName = System.currentTimeMillis() + "-" + file.getOriginalFilename();
-        Path targetPath = uploadPath.resolve(fileName);
-        Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+        try {
+            // Upload image to Cloudinary
+            var uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
 
-  
-        String fileUrl = "http://localhost:8080/images/" + fileName;
+            // Get the URL of the uploaded image
+            String fileUrl = (String) uploadResult.get("url");
 
-        return ResponseEntity.ok(fileUrl);
-    } catch (IOException e) {
-        e.printStackTrace();  
-        return ResponseEntity.status(500).body("Failed to upload image: " + e.getMessage());
+            return ResponseEntity.ok(fileUrl);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Failed to upload image: " + e.getMessage());
+        }
     }
-}
 
 
 

@@ -24,7 +24,7 @@ public class Post {
 
     private String caption;
 
-    private String UserProfileImage;
+    private String userProfileImage;
 
     private String location;
 
