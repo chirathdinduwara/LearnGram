@@ -10,7 +10,7 @@ function MyCourses() {
   }, []);
 
   const fetchCourses = async () => {
-    const response = await getMyCourses("userId123");
+    const response = await getMyCourses(localStorage.getItem("userEmail"));
     setCourses(response.data);
   };
 

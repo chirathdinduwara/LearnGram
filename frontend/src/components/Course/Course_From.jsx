@@ -22,11 +22,12 @@ function CreateCourse() {
   };
 
   const handleSubmit = async () => {
+    console.log(localStorage.getItem("userEmail"));
     const newCourse = {
       title,
       description,
       content,
-      createdBy: "userId123", // replace with real user id from auth
+      createdBy: localStorage.getItem("userEmail"), // replace with real user id from auth
     };
     await createCourse(newCourse);
     alert("Course Created Successfully!");
