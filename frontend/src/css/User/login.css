@@ -1,0 +1,79 @@
+.login-container{
+    background-image: url("../../assets/graphics/login-bg.svg");
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+
+}
+
+.login-form {
+    font-family: 'Roboto', Courier, monospace;
+    width: 400px;
+    background-color: #191919;
+    color: var(--main-text-color);
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+    border: none;
+    border-radius: 20px;
+    
+}
+
+.inputs-sec {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.login-form-up {
+    display: flex;
+    flex-direction: column;
+    padding: 70px 50px ;
+    gap: 30px;
+    text-align:  center;
+}
+
+.or {
+    font-size: 12px;
+}
+
+.login-input {
+    height: 40px;
+    padding: 10px;
+    background-color: #353535;
+    color: var(--main-text-color);
+    border: none;
+    border-radius: 10px;
+}
+
+.login-input:-webkit-autofill {
+    background-color: #353535 !important;
+    -webkit-box-shadow: 0 0 0 1000px #353535 inset;
+    -webkit-text-fill-color: var(--main-text-color) !important;
+}
+
+.login-input:-webkit-autofill:focus {
+    background-color: #353535 !important;
+    -webkit-box-shadow: 0 0 0 1000px #353535 inset;
+    -webkit-text-fill-color: var(--main-text-color) !important;
+}
+
+.log-in-btn {
+    background-color: #0097FF;
+    border: none;
+    height: 40px;
+    border-radius: 10px;
+    color: var(--main-text-color);
+    cursor: pointer;
+}
+
+.sign-up-link {
+    padding: 20px;
+    text-align: center;
+    font-family: 'Roboto', Courier, monospace;
+}
+
