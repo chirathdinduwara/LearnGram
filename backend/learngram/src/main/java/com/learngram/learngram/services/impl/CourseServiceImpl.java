@@ -19,6 +19,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course saveCourse(Course course) {
+        // Ensure that timestamps are updated when saving
         course.updateTimestamps();
         return courseRepository.save(course);
     }
@@ -45,16 +46,25 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course updateCourse(String courseId, Course updatedCourse, String userId) {
+        // Find the existing course by ID
         return courseRepository.findById(courseId).map(course -> {
+            // Ensure the user is authorized to update the course
             if (!course.getCreatedBy().equals(userId)) {
                 throw new RuntimeException("Unauthorized");
             }
 
+            // Update course fields only if they are non-null
             if (updatedCourse.getTitle() != null) course.setTitle(updatedCourse.getTitle());
             if (updatedCourse.getDescription() != null) course.setDescription(updatedCourse.getDescription());
-            if (updatedCourse.getContent() != null) course.setContent(updatedCourse.getContent());
+            if (updatedCourse.getContent() != null) {
+                // Update content if provided
+                course.setContent(updatedCourse.getContent());
+            }
 
+            // Update timestamps
             course.updateTimestamps();
+
+            // Save and return the updated course
             return courseRepository.save(course);
         }).orElseThrow(() -> new RuntimeException("Course not found"));
     }
@@ -72,11 +82,13 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course enrollInCourse(String courseId, String userId) {
         return courseRepository.findById(courseId).map(course -> {
+            // Enroll the user in the course if they are not already enrolled
             if (!course.getEnrolledUsers().contains(userId)) {
                 course.getEnrolledUsers().add(userId);
                 course.updateTimestamps();
                 return courseRepository.save(course);
             } else {
+                // If already enrolled, just return the course
                 return course;
             }
         }).orElseThrow(() -> new RuntimeException("Course not found"));

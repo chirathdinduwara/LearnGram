@@ -19,7 +19,7 @@ public class Course {
     private String courseId;
     private String title;
     private String description;
-    private List<String> content;  // Store URLs/paths for files and text
+    private List<Content> content;  // Store text and images as objects
     private String createdBy;
     private List<String> enrolledUsers;
     private LocalDateTime createdAt;
@@ -34,5 +34,13 @@ public class Course {
 
     public void updateTimestamps() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    // Define Content as a separate entity (could be text or file)
+    @Data
+    @AllArgsConstructor
+    public static class Content {
+        private String type; // text or image
+        private String value; // the content itself (either text or file path)
     }
 }

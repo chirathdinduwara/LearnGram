@@ -24,45 +24,63 @@ public class CourseController {
 
     // Handle Course Creation with File Uploads
     @PostMapping
-    public ResponseEntity<Course> createCourse(
-            @RequestParam String title,
-            @RequestParam String description,
-            @RequestParam String createdBy,
-            @RequestParam(required = false) List<String> contentTexts,
-            @RequestParam(required = false) List<MultipartFile> contentFiles
-    ) throws IOException {
-        List<String> combinedContent = new ArrayList<>();
+public ResponseEntity<Course> createCourse(
+        @RequestParam String title,
+        @RequestParam String description,
+        @RequestParam String createdBy,
+        @RequestParam(required = false) List<String> contentTexts,
+        @RequestParam(required = false) List<MultipartFile> contentFiles
+) {
+    List<Course.Content> combinedContent = new ArrayList<>();
 
-        // Add text content to list
-        if (contentTexts != null) {
-            combinedContent.addAll(contentTexts);
+    // Add text content to list
+    if (contentTexts != null) {
+        for (String text : contentTexts) {
+            combinedContent.add(new Course.Content("text", text));
+        }
+    }
+
+    // Handle image files and store them (store in backend folder)
+    if (contentFiles != null) {
+        String uploadDir = "uploads"; // Make sure this is an actual path on the server
+
+        // Create directory if it doesn't exist
+        File directory = new File(uploadDir);
+        if (!directory.exists()) {
+            directory.mkdirs();
         }
 
-        // Handle files and store them (example storing in a local folder)
-        if (contentFiles != null) {
-            for (MultipartFile file : contentFiles) {
-                // Define the path where the file will be saved
-                String filePath = "/path/to/upload/directory/" + file.getOriginalFilename();
+        for (MultipartFile file : contentFiles) {
+            if (!file.isEmpty()) {
+                // Generate a unique filename to avoid conflicts
+                String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                String filePath = uploadDir + File.separator + fileName; // Use File.separator for cross-platform compatibility
                 File fileToSave = new File(filePath);
-                file.transferTo(fileToSave);
-                
-                // Add the file path to content (could also store URL if using a server like AWS S3)
-                combinedContent.add(filePath);
+
+                try {
+                    file.transferTo(fileToSave); // Save the file to disk
+                    combinedContent.add(new Course.Content("image", filePath)); // Add the file path
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return ResponseEntity.status(500).body(null); // Return error if file transfer fails
+                }
             }
         }
-
-        // Create the course object
-        Course course = Course.builder()
-                .title(title)
-                .description(description)
-                .createdBy(createdBy)
-                .content(combinedContent)
-                .build();
-
-        // Save the course
-        Course saved = courseService.saveCourse(course);
-        return ResponseEntity.status(201).body(saved);
     }
+
+    // Create the course object
+    Course course = Course.builder()
+            .title(title)
+            .description(description)
+            .createdBy(createdBy)
+            .content(combinedContent)
+            .build();
+
+    // Save the course to the database
+    Course saved = courseService.saveCourse(course);
+    return ResponseEntity.status(201).body(saved); // Return the saved course
+}
+
 
     @GetMapping
     public List<Course> getAllCourses() {
@@ -87,11 +105,10 @@ public class CourseController {
     }
 
     @DeleteMapping("/{id}")
-public ResponseEntity<Void> deleteCourse(@PathVariable String id, @RequestParam String userId) {
-    boolean deleted = courseService.deleteCourse(id, userId);
-    return deleted ? ResponseEntity.noContent().build() : ResponseEntity.status(403).build();
-}
-
+    public ResponseEntity<Void> deleteCourse(@PathVariable String id, @RequestParam String userId) {
+        boolean deleted = courseService.deleteCourse(id, userId);
+        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.status(403).build();
+    }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Course> updateCourse(@PathVariable String id,
