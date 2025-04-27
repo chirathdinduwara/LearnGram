@@ -4,7 +4,7 @@ const EnrolledCourses = () => {
   return (
     <>
       <h2>Enrolled Courses</h2>
-      <p>You are enrolled in: (simulate here)</p>
+      <p>You are enrolled</p>
     </>
   );
 };
