@@ -32,7 +32,7 @@
 .login-form-up {
     display: flex;
     flex-direction: column;
-    padding: 70px 50px ;
+    padding: 20% 50px ;
     gap: 30px;
     text-align:  center;
 }
@@ -70,6 +70,7 @@
     color: var(--main-text-color);
     cursor: pointer;
 }
+
 
 .sign-up-link {
     padding: 20px;

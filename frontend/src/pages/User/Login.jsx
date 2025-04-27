@@ -63,7 +63,7 @@ function Login() {
 
         </div>
         <div className="login-form-down">
-          <hr />
+          <hr style={{margin: '0'}} />
           <p className="sign-up-link">Don't have an account ? <span style={{color: "blue"}}>Sign Up</span></p>
         </div>
       </div>
