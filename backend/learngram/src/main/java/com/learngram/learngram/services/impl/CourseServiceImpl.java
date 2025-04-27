@@ -18,8 +18,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course saveCourse(Course course) {
-        course.updateTimestamps();
+    public Course createCourse(Course course) {
+        course.setCreatedAt(java.time.LocalDateTime.now());
+        course.setUpdatedAt(java.time.LocalDateTime.now());
         return courseRepository.save(course);
     }
 
@@ -29,14 +30,33 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public List<Course> getCoursesByUser(String userId) {
+        return courseRepository.findByCreatedBy(userId);
+    }
+
+    @Override
     public Optional<Course> getCourseById(String courseId) {
         return courseRepository.findById(courseId);
     }
 
     @Override
-    public boolean deleteCourse(String courseId, String userId) {
-        Optional<Course> courseOpt = courseRepository.findById(courseId);
-        if (courseOpt.isPresent() && courseOpt.get().getCreatedBy().equals(userId)) {
+    public Course updateCourse(String courseId, Course courseUpdate) {
+        Optional<Course> existingOpt = courseRepository.findById(courseId);
+        if (existingOpt.isPresent()) {
+            Course existing = existingOpt.get();
+            existing.setTitle(courseUpdate.getTitle());
+            existing.setDescription(courseUpdate.getDescription());
+            existing.setContent(courseUpdate.getContent());
+            existing.updateTimestamps();
+            return courseRepository.save(existing);
+        } else {
+            throw new RuntimeException("Course not found with ID: " + courseId);
+        }
+    }
+
+    @Override
+    public boolean deleteCourse(String courseId) {
+        if (courseRepository.existsById(courseId)) {
             courseRepository.deleteById(courseId);
             return true;
         }
@@ -44,41 +64,14 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public Course updateCourse(String courseId, Course updatedCourse, String userId) {
-        return courseRepository.findById(courseId).map(course -> {
-            if (!course.getCreatedBy().equals(userId)) {
-                throw new RuntimeException("Unauthorized");
-            }
-
-            if (updatedCourse.getTitle() != null) course.setTitle(updatedCourse.getTitle());
-            if (updatedCourse.getDescription() != null) course.setDescription(updatedCourse.getDescription());
-            if (updatedCourse.getContent() != null) course.setContent(updatedCourse.getContent());
-
-            course.updateTimestamps();
-            return courseRepository.save(course);
-        }).orElseThrow(() -> new RuntimeException("Course not found"));
-    }
-
-    @Override
-    public List<Course> getCoursesByUser(String userId) {
-        return courseRepository.findByCreatedBy(userId);
-    }
-
-    @Override
-    public List<Course> getEnrolledCourses(String userId) {
-        return courseRepository.findByEnrolledUsersContaining(userId);
-    }
-
-    @Override
     public Course enrollInCourse(String courseId, String userId) {
-        return courseRepository.findById(courseId).map(course -> {
-            if (!course.getEnrolledUsers().contains(userId)) {
-                course.getEnrolledUsers().add(userId);
-                course.updateTimestamps();
-                return courseRepository.save(course);
-            } else {
-                return course;
-            }
-        }).orElseThrow(() -> new RuntimeException("Course not found"));
+        Optional<Course> existingOpt = courseRepository.findById(courseId);
+        if (existingOpt.isPresent()) {
+            Course course = existingOpt.get();
+            course.enrollUser(userId);
+            return courseRepository.save(course);
+        } else {
+            throw new RuntimeException("Course not found with ID: " + courseId);
+        }
     }
 }

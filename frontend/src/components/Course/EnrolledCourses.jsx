@@ -1,12 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getEnrolledCourses } from "./CourseServices";
+import CourseCard from "./CourseCard";
 
-const EnrolledCourses = () => {
+function EnrolledCourses() {
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    fetchEnrolled();
+  }, []);
+
+  const fetchEnrolled = async () => {
+    const response = await getEnrolledCourses("userId123");
+    setCourses(response.data);
+  };
+
   return (
-    <>
-      <h2>Enrolled Courses</h2>
-      <p>You are enrolled</p>
-    </>
+    <div>
+      <h1>Enrolled Courses</h1>
+      {courses.map((course) => (
+        <CourseCard key={course.courseId} course={course} showEnroll={false} />
+      ))}
+    </div>
   );
-};
+}
 
 export default EnrolledCourses;
