@@ -15,7 +15,7 @@ function AllCourses() {
   };
 
   const handleEnroll = async (courseId) => {
-    await enrollCourse(courseId, "userId123");
+    await enrollCourse(courseId, localStorage.getItem("userEmail"));
     alert("Enrolled Successfully!");
   };
 
