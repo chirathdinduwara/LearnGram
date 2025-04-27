@@ -7,6 +7,7 @@ function Course_From({ onCourseCreated }) {
   const [description, setDescription] = useState("");
   const [content, setContent] = useState([]);
   const [errors, setErrors] = useState({});
+  const Token = localStorage.getItem("userTocken");
 
   const validateForm = () => {
     const newErrors = {};
@@ -51,6 +52,7 @@ function Course_From({ onCourseCreated }) {
       await axios.post("http://localhost:8080/courses", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          'Authorization': `Bearer ${Token}`,
         },
       });
 
