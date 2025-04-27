@@ -14,11 +14,12 @@ function Course_From({ onCourseCreated }) {
     if (!title.trim()) newErrors.title = "Title is required.";
     if (!description.trim()) newErrors.description = "Description is required.";
 
-    const contentErrors = content.map((item, index) =>
-      item.text !== undefined && !item.text.trim()
-        ? `Content ${index + 1} is required.`
-        : null
-    );
+    const contentErrors = content.map((item, index) => {
+      if (item.text !== undefined && !item.text.trim()) {
+        return `Content ${index + 1} is required.`;
+      }
+      return null;
+    });
 
     if (contentErrors.some(Boolean)) {
       newErrors.content = contentErrors;
@@ -42,7 +43,7 @@ function Course_From({ onCourseCreated }) {
         if (item.text !== undefined) {
           formData.append(`content[${index}][text]`, item.text);
         }
-        if (item.file !== null) {
+        if (item.file !== null && item.file !== undefined) {
           formData.append(`content[${index}][file]`, item.file);
         }
       });
@@ -53,6 +54,7 @@ function Course_From({ onCourseCreated }) {
         },
       });
 
+      // Reset form
       setTitle("");
       setDescription("");
       setContent([]);
@@ -71,16 +73,16 @@ function Course_From({ onCourseCreated }) {
     setContent([...content, { text: undefined, file: null }]);
   };
 
-  const handleContentChange = (i, value) => {
-    const updated = [...content];
-    updated[i].text = value;
-    setContent(updated);
+  const handleContentChange = (index, value) => {
+    const updatedContent = [...content];
+    updatedContent[index].text = value;
+    setContent(updatedContent);
   };
 
-  const handleFileChange = (i, file) => {
-    const updated = [...content];
-    updated[i].file = file;
-    setContent(updated);
+  const handleFileChange = (index, file) => {
+    const updatedContent = [...content];
+    updatedContent[index].file = file;
+    setContent(updatedContent);
   };
 
   return (
@@ -92,12 +94,12 @@ function Course_From({ onCourseCreated }) {
             <img
               id="image1"
               src="https://foundr.com/wp-content/uploads/2021/09/Best-online-course-platforms.png"
-              alt="img"
+              alt="Course Example"
             />
             <img
               id="image2"
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCfz2XW-jS33OK4UkXXnB8LO2UegzmPl00Ew&s"
-              alt="img"
+              alt="Course Example"
             />
           </div>
         </div>
@@ -118,48 +120,55 @@ function Course_From({ onCourseCreated }) {
           placeholder="Enter Course Description Here"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-        ></textarea>
+        />
         {errors.description && <p className="error">{errors.description}</p>}
 
         <div id="contentRow">
           <h3 id="heading">Course Content</h3>
-          <button type="button" onClick={addTextContent}>
+          <button type="button" className="add-c-btn" onClick={addTextContent}>
             + Add Text
           </button>
-          <button type="button" onClick={addImageContent} style={{ marginLeft: "10px" }}>
+          <button
+            className="add-i-btn"
+            type="button"
+            onClick={addImageContent}
+            style={{ marginLeft: "10px" }}
+          >
             + Add Image
           </button>
         </div>
 
-        {content.map((item, i) => (
-          <div key={i} style={{ marginBottom: "20px" }}>
+        {content.map((item, index) => (
+          <div key={index} style={{ marginBottom: "20px" }}>
             {item.text !== undefined && (
               <input
                 id="contentInput"
                 type="text"
-                placeholder={`Add Content Here ${i + 1}`}
+                placeholder={`Add Content Here ${index + 1}`}
                 value={item.text}
-                onChange={(e) => handleContentChange(i, e.target.value)}
+                onChange={(e) => handleContentChange(index, e.target.value)}
               />
             )}
+
             {item.file !== undefined && (
               <>
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={(e) => handleFileChange(i, e.target.files[0])}
+                  onChange={(e) => handleFileChange(index, e.target.files[0])}
                 />
                 {item.file && (
                   <img
                     src={URL.createObjectURL(item.file)}
-                    alt={`preview ${i}`}
+                    alt={`preview-${index}`}
                     style={{ width: "100px", marginTop: "10px" }}
                   />
                 )}
               </>
             )}
-            {errors.content && errors.content[i] && (
-              <p className="error">{errors.content[i]}</p>
+
+            {errors.content && errors.content[index] && (
+              <p className="error">{errors.content[index]}</p>
             )}
           </div>
         ))}
