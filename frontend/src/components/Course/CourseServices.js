@@ -6,7 +6,7 @@ export const createCourse = (courseData) => API.post('/courses', courseData);
 export const UploadImage = (courseData) => API.post('/CourseImage', courseData);
 export const getMyCourses = (userId) => API.get(`/courses/user/${userId}`);
 export const getAllCourses = () => API.get('/courses');
-export const enrollCourse = (courseId, userId) => API.post(`/courses/${courseId}/enroll`, { userId });
+export const enrollCourse = (courseId, userId) => API.post(`/courses/${courseId}/enroll/${ userId }`);
 export const getEnrolledCourses = (userId) => API.get(`/courses/enrolled/${userId}`);
 export const updateCourse = (courseId, updatedData) => API.patch(`/courses/${courseId}`, updatedData);
 

@@ -10,7 +10,9 @@ function EnrolledCourses() {
   }, []);
 
   const fetchEnrolled = async () => {
-    const response = await getEnrolledCourses("userId123");
+    const response = await getEnrolledCourses(
+      localStorage.getItem("userEmail")
+    );
     setCourses(response.data);
   };
 

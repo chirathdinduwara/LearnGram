@@ -97,4 +97,9 @@ public class CourseController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/enrolled/{userId}")
+    public List<Course> getEnrolledCourses(@PathVariable String userId) {
+    return courseService.getEnrolledCourses(userId);
+}
 }

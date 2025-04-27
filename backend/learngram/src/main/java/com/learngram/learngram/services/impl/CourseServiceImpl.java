@@ -74,4 +74,10 @@ public class CourseServiceImpl implements CourseService {
             throw new RuntimeException("Course not found with ID: " + courseId);
         }
     }
+
+    @Override
+    public List<Course> getEnrolledCourses(String userId) {
+    return courseRepository.findByEnrolledUsersContaining(userId);
+}
+
 }

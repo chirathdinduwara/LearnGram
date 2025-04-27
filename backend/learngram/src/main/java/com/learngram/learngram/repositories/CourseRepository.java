@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface CourseRepository extends MongoRepository<Course, String> {
     List<Course> findByCreatedBy(String createdBy);
+    List<Course> findByEnrolledUsersContaining(String userId);
+
 }
