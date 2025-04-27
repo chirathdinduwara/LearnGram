@@ -23,17 +23,14 @@
     align-items: center;
     flex-grow: 1;
   }
-  
-  .course-card__details h2 {
-    margin-top: -100px;
-  }
+
   
   .course-card__details p {
     margin-top: -10px;
   }
   
   .course-card__image {
-    max-height: 260px;
+    height: 260px;
     margin-right: 20px;
     overflow: hidden;
     position: relative;

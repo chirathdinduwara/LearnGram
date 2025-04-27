@@ -24,9 +24,9 @@ function CourseCard({ course, onEnroll, showEnroll = true }) {
           {course.content.map(
             (c, index) =>
               c.type === "text" && (
-                <p key={index} className="course-card__text">
+                <a key={index} className="course-card__text" href= {c.value}>
                   {c.value}
-                </p>
+                </a>
               )
           )}
           {showEnroll && (
