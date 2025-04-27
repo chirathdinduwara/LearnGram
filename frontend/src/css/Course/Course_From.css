@@ -1,0 +1,111 @@
+/* Wrapper for the entire form */
+#container {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  font-family: "Roboto", sans-serif;
+}
+
+/* Form styling */
+#courseForm {
+  width: 700px;
+  background-color: #1f2937; /* Tailwind's gray-900 */
+  padding: 0.75rem;
+  color: white;
+  border-radius: 0.375rem;
+}
+
+/* Heading */
+#heading {
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+/* Image container */
+#imageRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* First image */
+#image1 {
+  height: 180px;
+  width: 400px;
+  border-radius: 0.375rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Second image */
+#image2 {
+  height: 180px;
+  width: 270px;
+  border-radius: 0.375rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Input fields and textarea */
+#courseTitle,
+#courseDescription,
+#contentInput {
+  font-family: "Roboto", sans-serif;
+  width: 100%;
+  background-color: #2d3a4e; /* Tailwind's gray-800 */
+  border: none;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  color: white;
+}
+
+/* Textarea specific styling */
+#courseDescription {
+  height: 100px;
+  resize: none;
+}
+
+/* Content section row */
+#contentRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Add button styling */
+#addButton {
+  background-color: #1f2937;
+  color: #facc15; /* Tailwind's yellow-500 */
+  font-weight: 800;
+  height: 20px;
+  width: 50px;
+  font-size: 1.125rem;
+  border-radius: 0.375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+#addButton:hover {
+  background-color: #f59e0b; /* Tailwind's amber-600 */
+  color: #1e3a8a; /* Tailwind's blue-950 */
+}
+
+/* Publish button */
+#publishButton {
+  margin-top: 0.75rem;
+  width: 100%;
+  background-color: #8b5cf6; /* Tailwind's purple-500 */
+  padding: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  border-radius: 0.375rem;
+  color: white;
+}
+
+.error {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
