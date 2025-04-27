@@ -35,6 +35,7 @@ function Course_From({ onCourseCreated }) {
     if (!validateForm()) return;
 
     try {
+      // Prepare FormData
       const formData = new FormData();
       formData.append("title", title);
       formData.append("description", description);
@@ -44,24 +45,35 @@ function Course_From({ onCourseCreated }) {
         if (item.text !== undefined) {
           formData.append(`content[${index}][text]`, item.text);
         }
-        if (item.file !== null && item.file !== undefined) {
+        if (item.file) {
           formData.append(`content[${index}][file]`, item.file);
         }
       });
 
-      await axios.post("http://localhost:8080/courses", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          'Authorization': `Bearer ${Token}`,
-        },
-      });
+      // Send the POST request to create the course
+      const response = await axios.post(
+        "http://localhost:8080/courses",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${Token}`,
+          },
+        }
+      );
 
-      // Reset form
+      console.log("Course created:", response.data);
+
+      // Reset form state after successful submission
       setTitle("");
       setDescription("");
       setContent([]);
       setErrors({});
-      onCourseCreated();
+
+      // Call the parent function to notify about course creation
+      if (onCourseCreated) {
+        onCourseCreated();
+      }
     } catch (error) {
       console.error("Course creation failed:", error);
     }

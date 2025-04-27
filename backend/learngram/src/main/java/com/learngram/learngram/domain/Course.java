@@ -19,7 +19,7 @@ public class Course {
     private String courseId;
     private String title;
     private String description;
-    private List<String> content;
+    private List<String> content;  // Store URLs/paths for files and text
     private String createdBy;
     private List<String> enrolledUsers;
     private LocalDateTime createdAt;

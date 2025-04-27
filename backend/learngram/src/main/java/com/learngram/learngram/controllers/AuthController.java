@@ -3,6 +3,7 @@ package com.learngram.learngram.controllers;
 import com.learngram.learngram.domain.User;
 import com.learngram.learngram.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -48,15 +49,18 @@ public class AuthController {
         }
     }
     
-    @PostMapping("/google")
-    public User saveGoogleUser(@RequestBody User user) {
-        User existingUser = userService.getUserByEmail(user.getEmail());
-        if (existingUser == null) {
-            return userService.saveUser(user); // Save new user
-        } else {
-            return existingUser; // User already exists
-        }
+  @PostMapping("/google")
+public ResponseEntity<User> saveGoogleUser(@RequestBody User user) {
+    User existingUser = userService.getUserByEmail(user.getEmail());
+
+    if (existingUser == null) {
+        User newUser = userService.saveUser(user); // Save new user
+        return ResponseEntity.ok(newUser);
+    } else {
+        return ResponseEntity.ok(existingUser); // Return existing user
     }
+}
+
 
 
 

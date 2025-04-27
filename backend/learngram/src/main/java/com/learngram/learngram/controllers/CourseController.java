@@ -4,11 +4,15 @@ import com.learngram.learngram.domain.Course;
 import com.learngram.learngram.services.CourseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/courses")
 public class CourseController {
 
@@ -18,8 +22,44 @@ public class CourseController {
         this.courseService = courseService;
     }
 
+    // Handle Course Creation with File Uploads
     @PostMapping
-    public ResponseEntity<Course> createCourse(@RequestBody Course course) {
+    public ResponseEntity<Course> createCourse(
+            @RequestParam String title,
+            @RequestParam String description,
+            @RequestParam String createdBy,
+            @RequestParam(required = false) List<String> contentTexts,
+            @RequestParam(required = false) List<MultipartFile> contentFiles
+    ) throws IOException {
+        List<String> combinedContent = new ArrayList<>();
+
+        // Add text content to list
+        if (contentTexts != null) {
+            combinedContent.addAll(contentTexts);
+        }
+
+        // Handle files and store them (example storing in a local folder)
+        if (contentFiles != null) {
+            for (MultipartFile file : contentFiles) {
+                // Define the path where the file will be saved
+                String filePath = "/path/to/upload/directory/" + file.getOriginalFilename();
+                File fileToSave = new File(filePath);
+                file.transferTo(fileToSave);
+                
+                // Add the file path to content (could also store URL if using a server like AWS S3)
+                combinedContent.add(filePath);
+            }
+        }
+
+        // Create the course object
+        Course course = Course.builder()
+                .title(title)
+                .description(description)
+                .createdBy(createdBy)
+                .content(combinedContent)
+                .build();
+
+        // Save the course
         Course saved = courseService.saveCourse(course);
         return ResponseEntity.status(201).body(saved);
     }
@@ -47,10 +87,11 @@ public class CourseController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCourse(@PathVariable String id, @RequestParam String userId) {
-        boolean deleted = courseService.deleteCourse(id, userId);
-        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.status(403).build();
-    }
+public ResponseEntity<Void> deleteCourse(@PathVariable String id, @RequestParam String userId) {
+    boolean deleted = courseService.deleteCourse(id, userId);
+    return deleted ? ResponseEntity.noContent().build() : ResponseEntity.status(403).build();
+}
+
 
     @PatchMapping("/{id}")
     public ResponseEntity<Course> updateCourse(@PathVariable String id,
