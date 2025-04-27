@@ -1,0 +1,42 @@
+.profile {
+     background-color: #191919;
+     min-height: 100vh;
+     padding: 50px 150px;
+}
+
+.profile-details {
+    display: flex;
+    font-family: 'Roboto', Courier, monospace;
+    color: var(--main-text-color);
+    justify-content: space-between;
+    align-items: center;
+    margin: auto;
+    width: 400px;
+
+}
+
+.user-email {
+    font-size: 12px;
+    color: var(--sub-text-color);
+}
+
+.prof-nav {
+    display: flex;
+    justify-content: center;
+}
+
+.prof-nav-list {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+    color: var(--main-text-color);
+}
+
+.prof-nav-item {
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--main-text-color);
+    display: flex;
+    gap: 10px;
+}
+

@@ -85,6 +85,7 @@ public class PostContoller {
         }
     }
 
+
     @DeleteMapping(path = "/posts/{postId}")
     public ResponseEntity<Void> deletePost(@PathVariable("postId") String postId) {
         boolean deleted = postService.delete(postId);
