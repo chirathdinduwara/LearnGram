@@ -4,6 +4,7 @@
 @import url("../src/css/Post/Post.css");
 @import url("../src/css/video/reel.css");
 @import url("../src/css/User/login.css");
+@import url("../src/css/Post/createPost.css");
 
 * {
   --main-bg: #000000;

@@ -26,6 +26,8 @@ function Login() {
 
         // Store token and email in localStorage
         localStorage.setItem("userToken", token);
+        localStorage.setItem("userName", decoded.name)
+        localStorage.setItem("userImage", decoded.picture)
         localStorage.setItem("userEmail", decoded.email);
         setUserData(decoded);
 

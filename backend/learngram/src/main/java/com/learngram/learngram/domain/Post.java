@@ -18,9 +18,15 @@ public class Post {
 
     private String userId;
 
+    private String userName;
+
     private String contentUrl;
 
     private String caption;
+
+    private String UserProfileImage;
+
+    private String location;
 
     public Post() {
     }
