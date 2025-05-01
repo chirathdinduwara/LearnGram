@@ -1,405 +1,57 @@
 .story-bar {
-  margin: 10px 60px;
-  padding: 30px 10px;
-  display: flex;
-  align-items: center;
-  height: max-content;
-  width: 600px; /* Optional: restrict width */
-  overflow: hidden; /* hides any scrollbars if needed */
-}
-
-.horizontal-story-bar {
-  display: flex;
-  gap: 20px;
-  overflow-x: auto; /* horizontal scrolling here */
-  white-space: nowrap;
-  scroll-behavior: smooth;
-  width: 100%;
-}
-
-.story-bar {
-  padding: 20px;
-  overflow: hidden;
-}
-
-.horizontal-story-bar {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  white-space: nowrap;
-  cursor: grab;
-  user-select: none;
-}
-
-.horizontal-story-bar.dragging {
-  cursor: grabbing;
-}
-
-.horizontal-story-bar::-webkit-scrollbar {
-  display: none;
-}
-
-.story-bar::-webkit-scrollbar {
-  display: none;
-}
+    margin: 10px 60px;
+    padding: 30px 10px;
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    width: 600px;
+    align-items: center;
+    height: max-content;
+  }
+  
+  .story-bar::-webkit-scrollbar {
+    display: none; 
+  }
+  
 
 .story-icon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  font-size: 14px;
-  color: white;
-  transition: transform 0.5s ease;
-}
-
-.story-img {
-  cursor: pointer;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  padding: 2px;
-  background: linear-gradient(
-    45deg,
-    #f09433,
-    #e6683c,
-    #dc2743,
-    #cc2366,
-    #bc1888
-  ); /* Insta gradient */
-  display: inline-block;
-  transition: transform 0.5s ease;
-}
-
-.story-img1 {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  padding: 2px;
-  display: inline-block;
-  transition: transform 0.5s ease;
-  border: none;
-}
-
-.story-profile {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  display: block;
-  border: 2px solid black;
-}
-.story-name {
-  margin-top: 5px;
-  font-family: "Roboto", Courier, monospace;
-  font-size: 10px;
-}
-
-.story-icon:hover .story-img {
-  transform: scale(1.05);
-  transition: transform 0.5s ease;
-  cursor: pointer;
-}
-
-.add-icon {
-  font-size: 26px;
-  margin-top: -48px;
-  margin-left: 35px;
-  color: rgb(255, 255, 255);
-  cursor: pointer;
-}
-
-.story-uploader {
-  max-width: 400px;
-  margin: 40px auto;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: "Helvetica Neue", sans-serif;
-}
-
-.story-uploader h2 {
-  text-align: center;
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  color: #262626;
-}
-
-.story-uploader form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.story-uploader input[type="file"] {
-  padding: 8px;
-  background-color: #fafafa;
-  border: 1px solid #dbdbdb;
-  border-radius: 8px;
-}
-
-.preview {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.preview img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 12px;
-  margin-top: 10px;
-  object-fit: cover;
-  border: 1px solid #dbdbdb;
-}
-
-.preview button {
-  margin-top: 10px;
-  padding: 6px 12px;
-  background-color: #efefef;
-  border: none;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  cursor: pointer;
-}
-
-.story-uploader textarea,
-.story-uploader input[type="text"] {
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: 1px solid #dbdbdb;
-  background-color: #fafafa;
-  resize: none;
-}
-
-.story-uploader textarea:focus,
-.story-uploader input[type="text"]:focus {
-  outline: none;
-  border-color: #a8a8a8;
-}
-
-.story-uploader button[type="submit"] {
-  padding: 12px;
-  font-size: 1rem;
-  background-color: #0095f6;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-.story-uploader button[type="submit"]:hover {
-  background-color: #007ac1;
-}
-
-.story-thumbnail {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  width: 80px;
-  text-align: center;
-}
-
-.story-thumbnail_image {
-  width: 66px;
-  height: 66px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #c13584; /* Instagram-like gradient border imitation */
-  padding: 2px;
-  transition: transform 0.2s ease;
-}
-
-.story-thumbnail_username {
-  margin-top: 6px;
-  font-size: 0.6rem;
-  color: #ffffff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 80px;
-}
-
-.story-thumbnail:hover .story-thumbnail_image {
-  transform: scale(1.05);
-  border-color: #e1306c;
-}
-.story-card {
-  margin-left: 30px;
-}
-
-.story-card h4 {
-  margin-top: 13px;
-  color: white;
-  font-size: smaller;
-  text-align: center;
-}
-
-.story-popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.story-popup-content {
-  position: relative;
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-}
-
-.story-popup-image {
-  max-width: 90vw;
-  max-height: 80vh;
-  border-radius: 10px;
-}
-
-.story-timer-bar {
-  position: relative;
-  height: 5px;
-  width: 100%;
-  background: #ddd;
-  margin-top: 15px;
-  overflow: hidden;
-  border-radius: 5px;
-}
-
-.story-timer-fill {
-  height: 100%;
-  width: 100%;
-  background: linear-gradient(to right, #00f260, #0575e6);
-  animation: fillTimer 5s linear forwards;
-}
-
-@keyframes fillTimer {
-  from {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    color: white;
+    transition: transform 0.5s ease;
+    
+  }
+  
+  .story-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    padding: 2px;
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); /* Insta gradient */
+    display: inline-block;
+    transition: transform 0.5s ease;
+  }
+  
+  .story-profile {
     width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: block;
+    border: 2px solid black;
   }
-  to {
-    width: 0%;
+  .story-name {
+    margin-top: 5px;
+    font-family: 'Roboto', Courier, monospace;
+    font-size: 10px;
   }
-}
-
-/* ...................................................... */
-/* General styling for the popup */
-.story-popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.story-popup-content {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 80%;
-  max-width: 600px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.3s ease-out;
-}
-
-/* Image styling */
-.story-popup-image {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin-bottom: 15px;
-}
-
-/* Text styling */
-h4 {
-  margin: 0;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #333;
-}
-
-p {
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 10px;
-}
-
-small {
-  font-size: 0.875rem;
-  color: #777;
-}
-
-/* Action buttons */
-.story-popup-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
-.story-popup-actions button {
-  padding: 8px 15px;
-  font-size: 0.9rem;
-  color: white;
-  background-color: #4caf50;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.story-popup-actions button:hover {
-  background-color: #45a049;
-}
-
-.story-popup-actions button:last-child {
-  background-color: #f44336;
-}
-
-.story-popup-actions button:last-child:hover {
-  background-color: #d32f2f;
-}
-
-/* Timer bar styling */
-.story-timer-bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.story-timer-fill {
-  height: 100%;
-  width: 100%;
-  background-color: #4caf50;
-  animation: fillTimer 10s linear infinite;
-}
-
-/* Timer animation */
-@keyframes fillTimer {
-  0% {
-    width: 0%;
+  
+  .story-icon:hover .story-img {
+    transform: scale(1.05);
+    transition: transform 0.5s ease;
+    cursor: pointer;
   }
-  100% {
-    width: 100%;
-  }
-}

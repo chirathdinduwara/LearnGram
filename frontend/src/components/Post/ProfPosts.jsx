@@ -28,13 +28,18 @@ function ProfPosts() {
     const handlePostClick = (id) => {
         navigate(`/viewPost/${id}`);
     };
+
+    
     
 
     const userPosts = posts.filter(post => post.userId === userEmail);
+    const filteredPosts = userPosts
+    .filter(post => post.type === "img" || post.type === null)
+    .reverse(); // Reversing after filtering
     return (
         <>
             <div className="profList">
-                {userPosts.slice().reverse().map((post) => (
+                {filteredPosts.map((post) => (
                     <ProfPost
                         key={post.postId}
                         img={post.contentUrl}

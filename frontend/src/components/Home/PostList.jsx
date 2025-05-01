@@ -13,7 +13,7 @@ function PostList() {
                 const response = await axios.get('http://localhost:8080/posts');
                 setPosts(response.data);
             } catch (err) {
-                // Handle error here if needed
+                console.error("Error fetching posts:", err);
             }
         };
 
@@ -24,22 +24,25 @@ function PostList() {
         navigate(`/viewPost/${id}`);
     };
 
+    const filteredPosts = posts
+        .filter(post => post.type === "img" || post.type === null)
+        .reverse(); // Reversing after filtering
+
     return (
-        <>
-            <div className="postList">
-                {posts.slice().reverse().map((post) => (
-                    <Post
-                        key={post.id}
-                        img={post.contentUrl}
-                        caption={post.caption}
-                        location={post.location}
-                        name={post.userName}
-                        profile={post.userProfileImage}
-                        onClick={() => handlePostClick(post.postId)}
-                    />
-                ))}
-            </div>
-        </>
+        <div className="postList">
+            {filteredPosts.map((post) => (
+                <Post
+                    key={post.id}
+                    img={post.contentUrl}
+                    caption={post.caption}
+                    location={post.location}
+                    name={post.userName}
+                    profile={post.userProfileImage}
+                    onClick={() => handlePostClick(post.postId)}
+                    id={post.postId}
+                />
+            ))}
+        </div>
     );
 }
 

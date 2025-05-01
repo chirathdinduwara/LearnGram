@@ -12,6 +12,7 @@
     align-items: center;
     margin: auto;
     width: 400px;
+    padding: 20px;
 
 }
 
@@ -23,6 +24,7 @@
 .prof-nav {
     display: flex;
     justify-content: center;
+    padding: 20px;
 }
 
 .prof-nav-list {
@@ -40,3 +42,10 @@
     gap: 10px;
 }
 
+.video-thumbnail {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+}
