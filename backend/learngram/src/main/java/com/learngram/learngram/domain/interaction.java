@@ -21,6 +21,8 @@ public class Interaction {
     
     private String postId;
     private String userId;
+    private String userName;
+    private String userProfilePic;
     private String comment;
 
     //time
