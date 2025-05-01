@@ -11,7 +11,7 @@ function ProfNav() {
             </Link>
           </li>
           <li className="prof-nav-item">
-            <Link className="prof-nav-item">
+            <Link className="prof-nav-item" to={'videos'}>
               <CgFilm /> Video
             </Link>
           </li>
