@@ -18,7 +18,7 @@ function EnrolledCourses() {
 
   return (
     <div>
-      <h1>Enrolled Courses</h1>
+      <h1 style={{ color: "#ffff" }}>Enrolled Courses</h1>
       {courses.map((course) => (
         <CourseCard key={course.courseId} course={course} showEnroll={false} />
       ))}
