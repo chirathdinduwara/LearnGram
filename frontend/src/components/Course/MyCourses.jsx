@@ -3,8 +3,10 @@ import { getMyCourses } from "./CourseServices";
 import axios from "axios";
 import CourseCard from "./CourseCard";
 import { CgTrash, CgPen } from "react-icons/cg";
+import { useNavigate } from "react-router-dom";
 
 function MyCourses() {
+  const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [message, setMessage] = useState("");
 
@@ -40,23 +42,8 @@ function MyCourses() {
     }
   };
 
-  const handleEdit = async (courseId, updatedData) => {
-    try {
-      const response = await axios.put(
-        `http://localhost:8080/courses/${courseId}`,
-        updatedData
-      );
-      if (response.status === 200) {
-        setMessage("Course updated successfully.");
-        fetchCourses(); // Refresh list
-      }
-    } catch (error) {
-      if (error.response && error.response.status === 404) {
-        setMessage("Course not found.");
-      } else {
-        setMessage("An error occurred while updating the course.");
-      }
-    }
+  const handleEdit = (courseId) => {
+    navigate(`/courses/update/${courseId}`);
   };
 
   return (
