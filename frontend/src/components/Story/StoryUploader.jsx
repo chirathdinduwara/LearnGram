@@ -7,6 +7,9 @@ function StoryUploader() {
   const [caption, setCaption] = useState("");
   const [location, setLocation] = useState("");
   const [existingStory, setExistingStory] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+
   const navigate = useNavigate();
   const { storyId } = useParams();
 
@@ -40,14 +43,28 @@ function StoryUploader() {
 
     try {
       let contentUrl = null;
+
       if (image) {
         const formData = new FormData();
         formData.append("image", image);
+        setIsUploading(true);
+
         const res = await axios.post(
           "http://localhost:8080/story/image",
-          formData
+          formData,
+          {
+            onUploadProgress: (progressEvent) => {
+              const percentCompleted = Math.round(
+                (progressEvent.loaded * 100) / progressEvent.total
+              );
+              setUploadProgress(percentCompleted);
+            },
+          }
         );
+
         contentUrl = res.data;
+        setIsUploading(false);
+        setUploadProgress(0);
       }
 
       if (storyId) {
@@ -60,7 +77,6 @@ function StoryUploader() {
           location,
         });
       } else {
-
         await axios.post("http://localhost:8080/stories", {
           userId,
           userName,
@@ -74,6 +90,8 @@ function StoryUploader() {
       navigate("/");
     } catch (err) {
       console.error("Error handling story", err);
+      setIsUploading(false);
+      setUploadProgress(0);
     }
   };
 
@@ -85,7 +103,9 @@ function StoryUploader() {
         {image && (
           <div className="preview">
             <img src={URL.createObjectURL(image)} alt="preview" />
-            <button onClick={handleRemoveImage}>Remove</button>
+            <button type="button" onClick={handleRemoveImage}>
+              Remove
+            </button>
           </div>
         )}
         {!image && existingStory && existingStory.contentUrl && (
@@ -106,6 +126,21 @@ function StoryUploader() {
         />
         <button type="submit">{storyId ? "Update Story" : "Post Story"}</button>
       </form>
+
+      {isUploading && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Uploading Story...</h2>
+            <div className="loading-bar">
+              <div
+                className="progress-bar"
+                style={{ width: `${uploadProgress}%` }}
+              />
+            </div>
+            <p>{uploadProgress}%</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

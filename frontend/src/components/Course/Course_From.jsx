@@ -1,59 +1,84 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "../../css/Course/CourseForm.css";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function CreateCourse() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState([]);
   const [tempContent, setTempContent] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [errors, setErrors] = useState({});
+
+  const navigate = useNavigate();
+
+  // Validate the form inputs
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!title.trim()) newErrors.title = "Title is required.";
+    if (!description.trim()) newErrors.description = "Description is required.";
+    if (content.length === 0)
+      newErrors.content = "Add at least one content item.";
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleAddText = () => {
-    setContent([...content, { type: "text", value: tempContent }]);
-    setTempContent("");
+    if (tempContent.trim() !== "") {
+      setContent([...content, { type: "text", value: tempContent }]);
+      setTempContent("");
+    }
   };
 
   const handleAddImage = (e) => {
     const file = e.target.files[0];
     if (file) {
       const url = URL.createObjectURL(file);
-      setContent([...content, { type: "image", value: url }]);
+      setContent([...content, { type: "image", value: url, file }]);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title || !description || content.length === 0) {
-      alert("Please fill in all fields and add at least one content item.");
+    if (!validateForm()) {
+      toast.error("Invalid Data format !");
       return;
     }
 
     try {
+      setIsUploading(true);
       const processedContent = [];
 
       for (let item of content) {
         if (item.type === "image" && item.value.startsWith("blob:")) {
-          const response = await fetch(item.value);
-          const blob = await response.blob();
           const formData = new FormData();
-          formData.append("image", blob);
+          formData.append("image", item.file);
 
-          // Upload image to backend
           const imageResponse = await axios.post(
             "http://localhost:8080/courses/CourseImage",
             formData,
             {
-              headers: {
-                "Content-Type": "multipart/form-data",
+              headers: { "Content-Type": "multipart/form-data" },
+              onUploadProgress: (progressEvent) => {
+                const percent = Math.round(
+                  (progressEvent.loaded * 100) / progressEvent.total
+                );
+                setUploadProgress(percent);
               },
             }
           );
 
-          const imageUrl = imageResponse.data; // Backend should return the image URL
-          processedContent.push({ type: "image", value: imageUrl });
+          processedContent.push({ type: "image", value: imageResponse.data });
         } else {
-          processedContent.push(item); // Text content
+          processedContent.push({ type: "text", value: item.value });
         }
       }
 
@@ -66,13 +91,33 @@ function CreateCourse() {
 
       await axios.post("http://localhost:8080/courses", newCourse);
 
-      alert("Course Created Successfully!");
+      toast.success("Course Created Successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+
       setTitle("");
       setDescription("");
       setContent([]);
+
+      setTimeout(() => navigate("/"), 1500);
     } catch (error) {
       console.error("Error while creating course:", error);
-      alert("There was an error while creating the course.");
+      toast.error("There was an error while creating the course.", {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    } finally {
+      setIsUploading(false);
+      setUploadProgress(0);
     }
   };
 
@@ -82,24 +127,31 @@ function CreateCourse() {
         <h1 className="course-title">Create Course</h1>
 
         <input
-          className="input-title"
+          className={`input-title ${errors.title ? "input-error" : ""}`}
           placeholder="Course Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
+        {errors.title && <span className="error-text">{errors.title}</span>}
         <br />
         <br />
 
         <textarea
-          className="input-description"
+          className={`input-description ${
+            errors.description ? "input-error" : ""
+          }`}
           placeholder="Course Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
+        {errors.description && (
+          <span className="error-text">{errors.description}</span>
+        )}
         <br />
         <br />
 
         <h3 className="content-heading">Content:</h3>
+        {errors.content && <span className="error-text">{errors.content}</span>}
         <div className="content-list">
           {content.map((c, i) => (
             <div key={i} className="content-item">
@@ -142,6 +194,25 @@ function CreateCourse() {
           Create Course
         </button>
       </div>
+
+      {/* Upload Progress Modal */}
+      {isUploading && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Uploading Image...</h2>
+            <div className="loading-bar">
+              <div
+                className="progress-bar"
+                style={{ width: `${uploadProgress}%` }}
+              />
+            </div>
+            <p>{uploadProgress}%</p>
+          </div>
+        </div>
+      )}
+
+      {/* Toast Message Container */}
+      <ToastContainer />
     </>
   );
 }

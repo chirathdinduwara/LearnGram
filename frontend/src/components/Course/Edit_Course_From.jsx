@@ -55,6 +55,19 @@ function CourseUpdateForm() {
   const handleAddImage = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Basic validation: check if file is an image
+      const fileTypes = ["image/jpeg", "image/png", "image/gif"];
+      if (!fileTypes.includes(file.type)) {
+        alert("Please upload a valid image (JPEG, PNG, GIF).");
+        return;
+      }
+
+      // Optional: Check file size (e.g., 5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        alert("Image size must be less than 5MB.");
+        return;
+      }
+
       const url = URL.createObjectURL(file);
       setContent([...content, { type: "image", value: url }]);
     }
@@ -76,8 +89,29 @@ function CourseUpdateForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title || !description || content.length === 0) {
-      alert("Please fill in all fields and add at least one content item.");
+    // Validate Title and Description
+    if (!title.trim()) {
+      alert("Please provide a valid course title.");
+      return;
+    }
+
+    if (!description.trim()) {
+      alert("Please provide a valid course description.");
+      return;
+    }
+
+    // Validate Content - Ensure there is at least one content item
+    if (content.length === 0) {
+      alert("Please add at least one content item (Text or Image).");
+      return;
+    }
+
+    // Validate Text Content
+    const hasEmptyTextContent = content.some(
+      (item) => item.type === "text" && item.value.trim() === ""
+    );
+    if (hasEmptyTextContent) {
+      alert("Text content cannot be empty.");
       return;
     }
 
@@ -98,7 +132,7 @@ function CourseUpdateForm() {
       );
 
       alert("Course Updated Successfully!");
-      navigate(`/courses/${courseId}`); // Redirect to updated course page
+      navigate(`/Course-Dashboard`); // Redirect to updated course page
     } catch (error) {
       console.error("Error while updating course:", error);
       alert("There was an error while updating the course.");
