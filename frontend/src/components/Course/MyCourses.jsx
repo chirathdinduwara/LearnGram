@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getMyCourses } from "./CourseServices";
 import axios from "axios";
 import CourseCard from "./CourseCard";
-import { CgTrash } from "react-icons/cg";
+import { CgTrash, CgPen } from "react-icons/cg";
 
 function MyCourses() {
   const [courses, setCourses] = useState([]);
@@ -40,6 +40,25 @@ function MyCourses() {
     }
   };
 
+  const handleEdit = async (courseId, updatedData) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/courses/${courseId}`,
+        updatedData
+      );
+      if (response.status === 200) {
+        setMessage("Course updated successfully.");
+        fetchCourses(); // Refresh list
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        setMessage("Course not found.");
+      } else {
+        setMessage("An error occurred while updating the course.");
+      }
+    }
+  };
+
   return (
     <div>
       <h1>My Courses</h1>
@@ -50,12 +69,20 @@ function MyCourses() {
           style={{ display: "flex", alignItems: "center" }}
         >
           <CourseCard course={course} showEnroll={false} />
-          <button
-            className="delete-c-btn"
-            onClick={() => handleDelete(course.courseId)}
-          >
-            <CgTrash className="delete-c-icon" />
-          </button>
+          <div className="button-group">
+            <button
+              className="delete-c-btn"
+              onClick={() => handleDelete(course.courseId)}
+            >
+              <CgTrash className="delete-c-icon" />
+            </button>
+            <button
+              className="edit-c-btn"
+              onClick={() => handleEdit(course.courseId)}
+            >
+              <CgPen className="edit-c-icon" />
+            </button>
+          </div>
         </div>
       ))}
     </div>
