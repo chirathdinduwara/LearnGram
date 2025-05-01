@@ -29,19 +29,21 @@
 }
 
 .course-card__image {
+  width: 450px;
   height: 260px;
-  margin-right: 20px;
+  flex-shrink: 0; /* Prevents shrinking in flex layout */
   overflow: hidden;
   position: relative;
   border-radius: 8px;
 }
 
 .course-card__image-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: opacity 0.3s ease;
+  width: 400px;
+  height: 260px;
+  object-fit: cover; /* Maintains aspect ratio without distortion */
+  display: block;
 }
+
 
 .course-card__image:hover .course-card__image-img {
   opacity: 0.8;

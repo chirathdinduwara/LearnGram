@@ -231,6 +231,10 @@
 }
 .story-card {
   margin-left: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .story-card h4 {
@@ -238,6 +242,7 @@
   color: white;
   font-size: smaller;
   text-align: center;
+  display: flex;
 }
 
 .story-popup {
