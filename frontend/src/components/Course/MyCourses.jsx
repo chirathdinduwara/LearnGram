@@ -2,22 +2,15 @@ import React, { useEffect, useState } from "react";
 import { getMyCourses } from "./CourseServices";
 import axios from "axios";
 import CourseCard from "./CourseCard";
-import { CgTrash, CgPen } from "react-icons/cg";
+import { CgTrash, CgPen, CgOptions } from "react-icons/cg";
+import { BsThreeDots } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
 function MyCourses() {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [message, setMessage] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  const [activeCourseId, setActiveCourseId] = useState(null); // ID of course whose options are open
 
   useEffect(() => {
     fetchCourses();
@@ -39,7 +32,7 @@ function MyCourses() {
       );
       if (response.status === 204) {
         setMessage("Course deleted successfully.");
-        // Refresh course list
+        setActiveCourseId(null); // Close the popup
         fetchCourses();
       }
     } catch (error) {
@@ -62,38 +55,69 @@ function MyCourses() {
       {courses.map((course) => (
         <div
           key={course.courseId}
-          style={{ display: "flex", alignItems: "center" }}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            position: "relative",
+          }}
         >
           <CourseCard course={course} showEnroll={false} />
-          <div className="button-group">
-            <button
-              className="delete-c-btn"
-              onClick={() => handleDelete(course.courseId)}
-            >
-              <CgTrash className="delete-c-icon" />
-            </button>
-            <button
-              className="edit-c-btn"
-              onClick={() => handleEdit(course.courseId)}
-            >
-              <CgPen className="edit-c-icon" />
-            </button>
+          <div
+            className="three-dots"
+            onClick={() =>
+              setActiveCourseId(
+                activeCourseId === course.courseId ? null : course.courseId
+              )
+            }
+            style={{ cursor: "pointer", marginLeft: "10px" }}
+          >
+            <BsThreeDots />
           </div>
+
+          {activeCourseId === course.courseId && (
+            <div
+              className="popup-overlay"
+              onClick={() => setActiveCourseId(null)}
+              style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: "rgba(0,0,0,0.3)",
+              }}
+            >
+              <div
+                className="popup-content"
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  padding: "10px",
+                  borderRadius: "5px",
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                }}
+              >
+                <ul style={{ listStyle: "none", padding: 0 }}>
+                  <button
+                    className="edit-c-btn"
+                    onClick={() => handleEdit(course.courseId)}
+                  >
+                    <CgPen className="edit-c-icon" /> Edit
+                  </button>
+                  <button
+                    className="delete-c-btn"
+                    onClick={() => handleDelete(course.courseId)}
+                  >
+                    <CgTrash className="delete-c-icon" /> Delete
+                  </button>
+                </ul>
+              </div>
+            </div>
+          )}
         </div>
       ))}
-      <button onClick={openModal}>Open Popup</button>
-      {isModalOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close-btn" onClick={closeModal}>
-              X
-            </span>
-            <h2>Popup Content</h2>
-            <p>This is a simple popup modal.</p>
-            <button onClick={closeModal}>Close</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

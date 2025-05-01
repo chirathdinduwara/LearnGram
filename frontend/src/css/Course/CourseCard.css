@@ -91,23 +91,33 @@
 }
 
 .delete-c-btn {
-  top: 230px;
-  left: 1420px;
-  background-color: rgb(250, 67, 67);
-  width: 50px;
-  height: 50px;
+  display: flex;
+  gap: 10px;
+  background-color: #222222;
+  width: 100%;
+  border: 1px solid wheat;
+  color: white;
+  font-weight: bold;
+  margin-top: 10px;
   align-items: center;
-  justify-content: center;
+  font-size: medium;
   display: flex;
   transition: 0.4s ease;
 }
 
 .edit-c-btn {
-  background-color: rgb(51, 172, 7);
-  width: 50px;
-  height: 50px;
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+  background-color: #222222;
+  width: 100%;
+  color: white;
+  font-weight: bold;
+  font-size: medium;
+  margin-top: 10px;
+  border: 1px solid wheat;
+  margin-bottom: 10px;
   align-items: center;
-  justify-content: center;
   display: flex;
   transition: 0.4s ease;
 }
@@ -121,6 +131,8 @@
 }
 
 .delete-c-icon {
+  display: flex;
+
   color: white;
   font-size: 25px;
   transition: 0.4s ease;
@@ -142,7 +154,10 @@
   align-items: center;
 }
 
-
-.modal{
+.three-dots {
+  color: white;
+  top: 20px;
+  left: 1105px;
+  font-size: 25px;
   position: absolute;
 }

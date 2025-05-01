@@ -14,7 +14,7 @@ function ViewPost() {
 
     
     const toggleOptions = () => {
-        setShowOptions(!showOptions);
+        setShowOptions(!showOptions); 
     };
 
     const closePopup = () => {
