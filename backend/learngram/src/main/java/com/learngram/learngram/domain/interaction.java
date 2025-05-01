@@ -23,6 +23,7 @@ public class Interaction {
     private String userId;
     private String comment;
 
+    //time
 
     
 
