@@ -104,7 +104,7 @@
   align-items: center;
   font-size: medium;
   display: flex;
-  transition: 0.4s ease;
+  transition: 0.5s ease;
 }
 
 .edit-c-btn {
