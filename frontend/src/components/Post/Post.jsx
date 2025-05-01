@@ -1,4 +1,4 @@
-function Post({img, profile, caption, location, name}) {
+function Post({img, profile, caption, location, name, onClick}) {
 
 
     return (
@@ -16,13 +16,13 @@ function Post({img, profile, caption, location, name}) {
                         <p className="post-u-name">{name}</p>
                         <p className="post-location">{location}</p>
                     </div>
-                    <div className="post-header-details-right">
+                    {/* <div className="post-header-details-right">
                         <p className="post-time"> • 3d</p>
-                    </div>
+                    </div> */}
                 </div>
                 </div>
                 <div className="post-content">
-                    <img className="post-img" src={img} alt="" srcset="" />
+                    <img className="post-img" src={img} onClick={onClick}  alt="" srcset="" />
                     <div className="post-caption">
                         <p className="post-u-name">{name}</p>
                         <p>{caption}</p>
