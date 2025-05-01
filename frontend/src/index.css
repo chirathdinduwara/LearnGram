@@ -6,6 +6,7 @@
 @import url("../src/css/User/login.css");
 @import url("../src/css/Post/createPost.css");
 @import url("../src/css/Profile/Profile.css");
+@import url("../src/css/Post/viewPost.css");
 
 * {
   --main-bg: #000000;

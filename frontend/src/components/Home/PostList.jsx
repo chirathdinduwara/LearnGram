@@ -1,9 +1,11 @@
 import Post from "../Post/Post";
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 function PostList() {
     const [posts, setPosts] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -18,6 +20,9 @@ function PostList() {
         fetchPosts();
     }, []);
 
+    const handlePostClick = (id) => {
+        navigate(`/viewPost/${id}`);
+    };
 
     return (
         <>
@@ -30,6 +35,7 @@ function PostList() {
                         location={post.location}
                         name={post.userName}
                         profile={post.userProfileImage}
+                        onClick={() => handlePostClick(post.postId)}
                     />
                 ))}
             </div>

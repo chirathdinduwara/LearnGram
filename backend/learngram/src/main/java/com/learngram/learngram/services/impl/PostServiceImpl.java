@@ -62,6 +62,9 @@ public class PostServiceImpl implements PostService {
             if (partialPost.getUserId() != null) {
                 existingPost.setUserId(partialPost.getUserId());
             }
+            if (partialPost.getLocation() != null) {
+                existingPost.setLocation(partialPost.getLocation());
+            }
     
             return postRepo.save(existingPost);
         } else {

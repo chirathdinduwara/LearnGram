@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ProfPost from "./ProfPost";
+import { useNavigate } from "react-router-dom";
 
 function ProfPosts() {
 
     const [posts, setPosts] = useState([]);
+    const navigate = useNavigate();
 
     const userEmail = localStorage.getItem("userEmail");
 
@@ -19,7 +21,14 @@ function ProfPosts() {
         };
 
         fetchPosts();
+
     }, []);
+
+
+    const handlePostClick = (id) => {
+        navigate(`/viewPost/${id}`);
+    };
+    
 
     const userPosts = posts.filter(post => post.userId === userEmail);
     return (
@@ -27,8 +36,9 @@ function ProfPosts() {
             <div className="profList">
                 {userPosts.slice().reverse().map((post) => (
                     <ProfPost
-                        key={post.id}
+                        key={post.postId}
                         img={post.contentUrl}
+                        onClick={() => handlePostClick(post.postId)}
                     />
                 ))}
             </div>
