@@ -403,3 +403,17 @@ small {
     width: 100%;
   }
 }
+
+.story-viewer {
+  display: flex;
+}
+
+.backbtn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 10px;
+  color: rgb(6, 6, 6);
+}
