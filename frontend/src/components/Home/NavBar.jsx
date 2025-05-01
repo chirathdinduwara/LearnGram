@@ -96,7 +96,7 @@ function NavBar() {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-item" to="/">
+                  <Link className="nav-item" to="/createVideo">
                     Upload Video <CgCamera size={20} />
                   </Link>
                 </li>

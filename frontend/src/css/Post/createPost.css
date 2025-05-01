@@ -17,7 +17,7 @@
     display: flex;
     padding: 30px;
     gap: 50px;
-    max-height: 500px;
+    max-height: 100%;
     box-shadow: rgba(70, 70, 70, 0.35) 0px 5px 15px;
 }
 
