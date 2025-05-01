@@ -53,7 +53,7 @@ function UpdatePost() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!caption || !location || !image) {
+        if (!caption || !location) {
             toast.error("Please fill all the fields.");
             return;
         }

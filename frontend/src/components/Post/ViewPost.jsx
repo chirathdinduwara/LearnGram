@@ -191,21 +191,26 @@ function ViewPost() {
                                                 <p className="post-u-caption">{comment.comment}</p>
                                             </div>
                                             {(comment.userId === userId || post.userId === userId) && (
-                                                <div className='comment-actions'>
-                                                    <CiPickerEmpty
-                                                        className='comment-actions-btn'
-                                                        color='green'
-                                                        size={"20"}
-                                                        onClick={() => openEditPopup(comment)}
-                                                    />
-                                                    <CiTrash
-                                                        className='comment-actions-btn'
-                                                        color='red'
-                                                        size={"20"}
-                                                        onClick={() => handleDeleteComment(comment.id)}
-                                                    />
-                                                </div>
-                                            )}
+    <div className='comment-actions'>
+        {comment.userId === userId && (
+            <CiPickerEmpty
+                className='comment-actions-btn'
+                color='green'
+                size={"20"}
+                onClick={() => openEditPopup(comment)}
+            />
+        )}
+        {(comment.userId === userId || post.userId === userId) && (
+            <CiTrash
+                className='comment-actions-btn'
+                color='red'
+                size={"20"}
+                onClick={() => handleDeleteComment(comment.id)}
+            />
+        )}
+    </div>
+)}
+
                                         </div>
                                     </div>
                                 ))}
