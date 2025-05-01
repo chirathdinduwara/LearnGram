@@ -2,11 +2,22 @@ import React, { useEffect, useState } from "react";
 import { getMyCourses } from "./CourseServices";
 import axios from "axios";
 import CourseCard from "./CourseCard";
-import { CgTrash } from "react-icons/cg";
+import { CgTrash, CgPen } from "react-icons/cg";
+import { useNavigate } from "react-router-dom";
 
 function MyCourses() {
+  const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [message, setMessage] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     fetchCourses();
@@ -40,6 +51,10 @@ function MyCourses() {
     }
   };
 
+  const handleEdit = (courseId) => {
+    navigate(`/courses/update/${courseId}`);
+  };
+
   return (
     <div>
       <h1>My Courses</h1>
@@ -50,14 +65,35 @@ function MyCourses() {
           style={{ display: "flex", alignItems: "center" }}
         >
           <CourseCard course={course} showEnroll={false} />
-          <button
-            className="delete-c-btn"
-            onClick={() => handleDelete(course.courseId)}
-          >
-            <CgTrash className="delete-c-icon" />
-          </button>
+          <div className="button-group">
+            <button
+              className="delete-c-btn"
+              onClick={() => handleDelete(course.courseId)}
+            >
+              <CgTrash className="delete-c-icon" />
+            </button>
+            <button
+              className="edit-c-btn"
+              onClick={() => handleEdit(course.courseId)}
+            >
+              <CgPen className="edit-c-icon" />
+            </button>
+          </div>
         </div>
       ))}
+      <button onClick={openModal}>Open Popup</button>
+      {isModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close-btn" onClick={closeModal}>
+              X
+            </span>
+            <h2>Popup Content</h2>
+            <p>This is a simple popup modal.</p>
+            <button onClick={closeModal}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -91,25 +91,58 @@
 }
 
 .delete-c-btn {
-  position: absolute;
   top: 230px;
   left: 1420px;
   background-color: rgb(250, 67, 67);
   width: 50px;
   height: 50px;
-  border-radius: 100%;
   align-items: center;
   justify-content: center;
   display: flex;
   transition: 0.4s ease;
 }
 
+.edit-c-btn {
+  background-color: rgb(51, 172, 7);
+  width: 50px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  transition: 0.4s ease;
+}
+
+.edit-c-btn:hover {
+  background-color: rgb(40, 111, 4);
+}
+
 .delete-c-btn:hover {
-  background-color: rgb(255, 0, 0);
+  background-color: rgb(175, 8, 22);
 }
 
 .delete-c-icon {
   color: white;
   font-size: 25px;
   transition: 0.4s ease;
+}
+
+.edit-c-icon {
+  color: white;
+  font-size: 25px;
+  transition: 0.4s ease;
+}
+
+.button-group {
+  position: absolute;
+  top: 230px;
+  left: 1350px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+
+.modal{
+  position: absolute;
 }
