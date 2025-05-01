@@ -1,4 +1,5 @@
 import ProfPosts from "../components/Post/ProfPosts.jsx";
+import ProfVideos from "../components/Post/ProfVideos.jsx";
 import Profile from "../pages/Home/Profile.jsx";
 
 const ProfileRoutes = [
@@ -9,6 +10,10 @@ const ProfileRoutes = [
             {
                 index: true,
                 element: <ProfPosts />
+            },
+            {
+                path: 'videos',
+                element: <ProfVideos />
             }
         ]
     }
