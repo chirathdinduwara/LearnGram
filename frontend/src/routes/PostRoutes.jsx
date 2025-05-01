@@ -1,4 +1,5 @@
 import CreatePost from "../components/Post/CreatePost";
+import CreateVideo from "../components/Post/CreateVideo";
 import UpdatePost from "../components/Post/UpdatePost";
 import ViewPost from "../components/Post/ViewPost";
 
@@ -14,6 +15,10 @@ const PostRoutes = [
     {
         path: "editPost/:id",
         element: <UpdatePost />
+    },
+    {
+        path: "createVideo",
+        element: <CreateVideo />
     }
 ];
 

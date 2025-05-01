@@ -28,6 +28,8 @@ public class Post {
 
     private String location;
 
+    private String type;
+
     public Post() {
     }
 

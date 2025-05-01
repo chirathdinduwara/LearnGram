@@ -2,6 +2,7 @@ package com.learngram.learngram.controllers;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,28 @@ public class PostContoller {
             return ResponseEntity.status(500).body("Failed to upload image: " + e.getMessage());
         }
     }
+
+    @PostMapping("/video")
+public ResponseEntity<String> uploadVideo(@RequestParam("video") MultipartFile file) {
+    if (file.isEmpty()) {
+        return ResponseEntity.badRequest().body("No video selected to upload.");
+    }
+
+    try {
+        // Set resource_type to "video"
+        Map<String, Object> options = ObjectUtils.asMap(
+            "resource_type", "video"
+        );
+
+        var uploadResult = cloudinary.uploader().upload(file.getBytes(), options);
+
+        String videoUrl = (String) uploadResult.get("url");
+        return ResponseEntity.ok(videoUrl);
+    } catch (IOException e) {
+        e.printStackTrace();
+        return ResponseEntity.status(500).body("Failed to upload video: " + e.getMessage());
+    }
+}
 
 
 

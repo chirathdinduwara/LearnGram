@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 
-
-function CreatePost() {
-  const [image, setImage] = useState(null);
+function CreateVideo() {
+  const [videoFile, setVideoFile] = useState(null);
   const [caption, setCaption] = useState("");
   const [location, setLocation] = useState("");
   const [isUploading, setIsUploading] = useState(false);
@@ -15,51 +14,65 @@ function CreatePost() {
   const userName = localStorage.getItem("userName");
   const userProfileImage = localStorage.getItem("userImage");
 
-  const handleImageChange = (e) => {
+  const handleVideoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImage(file);
+      setVideoFile(file);
     }
   };
 
-  const handleRemoveImage = () => {
-    setImage(null);
+  const handleRemoveVideo = () => {
+    setVideoFile(null);
   };
+
+  const videoPreviewURL = useMemo(() => {
+    return videoFile ? URL.createObjectURL(videoFile) : null;
+  }, [videoFile]);
+
+  // Clean up the URL object to avoid memory leaks
+  useEffect(() => {
+    return () => {
+      if (videoPreviewURL) {
+        URL.revokeObjectURL(videoPreviewURL);
+      }
+    };
+  }, [videoPreviewURL]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!caption || !location || !image) {
-                toast.error("Please fill all the fields.");
-                return;
-            }
+    if (!caption || !location || !videoFile) {
+      toast.error("Please fill all the fields.");
+      return;
+    }
+
     try {
       setIsUploading(true);
       let contentUrl = null;
 
-      if (image) {
+      if (videoFile) {
         const formData = new FormData();
-        formData.append("image", image);
+        formData.append("video", videoFile);
 
-        // Upload the image to Spring Boot backend
-        const imageResponse = await axios.post(
-          "http://localhost:8080/image",
+        const videoResponse = await axios.post(
+          "http://localhost:8080/video",
           formData,
           {
             headers: {
               "Content-Type": "multipart/form-data",
             },
             onUploadProgress: (progressEvent) => {
-              const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+              const percent = Math.round(
+                (progressEvent.loaded * 100) / progressEvent.total
+              );
               setUploadProgress(percent);
-          }
+            },
           }
         );
 
-        contentUrl = imageResponse.data; // URL returned from backend
+        contentUrl = videoResponse.data;
       }
 
-      // Send post data including contentUrl to backend
       await axios.post("http://localhost:8080/posts", {
         userId,
         userName,
@@ -67,61 +80,61 @@ function CreatePost() {
         caption,
         userProfileImage,
         location,
-        type : "img"
+        type: 'vid'
       });
 
       toast.success("Post added Successfully");
       navigate("/");
-      setIsUploading(false);
     } catch (error) {
       console.error("Error while saving post data:", error);
+    } finally {
       setIsUploading(false);
     }
   };
 
   return (
     <div className="create-post">
-      <h1 className="create-header">Create a Post</h1>
+      <h1 className="create-header">Create a Video</h1>
       <form className="create-container" onSubmit={handleSubmit}>
-        <div className="image-container">
-          {image ? (
-            <div className="image-preview">
-              <img
-                src={URL.createObjectURL(image)}
-                alt="Uploaded Preview"
-                className="uploaded-image"
+        <div className="video-container">
+          {videoFile ? (
+            <div className="video-preview">
+              <video
+                controls
+                className="uploaded-video"
+                src={videoPreviewURL}
+                width="100%"
               />
               <button
                 type="button"
                 className="remove-btn"
-                onClick={handleRemoveImage}
+                onClick={handleRemoveVideo}
               >
                 ✖
               </button>
             </div>
           ) : (
             <input
-              className="imageInput"
+              className="videoInput"
               type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              disabled={!!image}
+              accept="video/*"
+              onChange={handleVideoChange}
+              disabled={!!videoFile}
             />
           )}
         </div>
 
-        {/* Modal for uploading progress */}
         {isUploading && (
-                    <div className="modal-overlay">
-                        <div className="modal-content">
-                            <h2>Uploading Image...</h2>
-                            <div className="loading-bar">
-                                <div className="progress-bar" style={{ width: `${uploadProgress}%` }} />
-                            </div>
-                            <p>{uploadProgress}%</p>
-                        </div>
-                    </div>
-                )}
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h2>Uploading Video...</h2>
+              <div className="loading-bar">
+                <div className="progress-bar" style={{ width: `${uploadProgress}%` }} />
+              </div>
+              <p>{uploadProgress}%</p>
+            </div>
+          </div>
+        )}
 
         <div className="left-form">
           <textarea
@@ -138,7 +151,7 @@ function CreatePost() {
             value={location}
             onChange={(e) => setLocation(e.target.value)}
           />
-          <button className="create-post-btn" type="submit">
+          <button className="create-post-btn" type="submit" disabled={isUploading}>
             Post
           </button>
         </div>
@@ -148,4 +161,4 @@ function CreatePost() {
   );
 }
 
-export default CreatePost;
+export default CreateVideo;
