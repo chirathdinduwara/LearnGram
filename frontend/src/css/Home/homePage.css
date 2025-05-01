@@ -12,7 +12,7 @@
     flex-direction: column;
     justify-content: space-between;
     border-right: 1px solid #1A1A1A;
-    width: fit-content;
+    width: 280px;
     position: sticky;
     top: 0; 
     z-index: 100; 
@@ -96,4 +96,13 @@
 
 .dropdown-menu li:hover {
     background-color: #1e1e1e;
+}
+
+.home-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.home-contents {
+    width: 90%;
 }
