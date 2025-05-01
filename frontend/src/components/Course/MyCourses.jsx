@@ -9,6 +9,15 @@ function MyCourses() {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [message, setMessage] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     fetchCourses();
@@ -72,6 +81,19 @@ function MyCourses() {
           </div>
         </div>
       ))}
+      <button onClick={openModal}>Open Popup</button>
+      {isModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close-btn" onClick={closeModal}>
+              X
+            </span>
+            <h2>Popup Content</h2>
+            <p>This is a simple popup modal.</p>
+            <button onClick={closeModal}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
