@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getAllCourses, enrollCourse } from "./CourseServices";
-import CourseCard from "./CourseCard";
+import CourseCard from "./CourseCardCopy";
 
 function AllCourses() {
   const [courses, setCourses] = useState([]);
@@ -21,7 +21,7 @@ function AllCourses() {
 
   return (
     <div>
-      <h1>All Courses</h1>
+      <h1 style={{color:"#ffff"}}>All Courses</h1>
       {courses.map((course) => (
         <CourseCard
           key={course.courseId}

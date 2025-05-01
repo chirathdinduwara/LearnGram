@@ -50,7 +50,7 @@ function MyCourses() {
 
   return (
     <div>
-      <h1>My Courses</h1>
+      <h1 style={{ color: "#ffff" }}>My Courses</h1>
       <p>{message}</p>
       {courses.map((course) => (
         <div
