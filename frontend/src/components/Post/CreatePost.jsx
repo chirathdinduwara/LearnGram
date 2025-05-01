@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
-
 
 function CreatePost() {
   const [image, setImage] = useState(null);
   const [caption, setCaption] = useState("");
   const [location, setLocation] = useState("");
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
+
   const navigate = useNavigate();
   const userId = localStorage.getItem("userEmail");
   const userName = localStorage.getItem("userName");
@@ -29,12 +26,12 @@ function CreatePost() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!caption || !location || !image) {
-                toast.error("Please fill all the fields.");
-                return;
-            }
+    if (!caption || !location) {
+      alert("Please fill in the caption and location fields.");
+      return;
+    }
+
     try {
-      setIsUploading(true);
       let contentUrl = null;
 
       if (image) {
@@ -49,10 +46,6 @@ function CreatePost() {
             headers: {
               "Content-Type": "multipart/form-data",
             },
-            onUploadProgress: (progressEvent) => {
-              const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-              setUploadProgress(percent);
-          }
           }
         );
 
@@ -67,15 +60,12 @@ function CreatePost() {
         caption,
         userProfileImage,
         location,
-        type : "img"
       });
 
-      toast.success("Post added Successfully");
+      // Redirect after successful post
       navigate("/");
-      setIsUploading(false);
     } catch (error) {
       console.error("Error while saving post data:", error);
-      setIsUploading(false);
     }
   };
 
@@ -103,25 +93,11 @@ function CreatePost() {
             <input
               className="imageInput"
               type="file"
-              accept="image/*"
               onChange={handleImageChange}
               disabled={!!image}
             />
           )}
         </div>
-
-        {/* Modal for uploading progress */}
-        {isUploading && (
-                    <div className="modal-overlay">
-                        <div className="modal-content">
-                            <h2>Uploading Image...</h2>
-                            <div className="loading-bar">
-                                <div className="progress-bar" style={{ width: `${uploadProgress}%` }} />
-                            </div>
-                            <p>{uploadProgress}%</p>
-                        </div>
-                    </div>
-                )}
 
         <div className="left-form">
           <textarea
@@ -143,7 +119,6 @@ function CreatePost() {
           </button>
         </div>
       </form>
-      <ToastContainer />
     </div>
   );
 }

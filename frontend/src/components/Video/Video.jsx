@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { CiVolumeMute, CiVolumeHigh, CiPlay1 } from "react-icons/ci";
 
-function Video({videoURL, userName, location, caption, profile }) {
+function Video({ video }) {
   const videoRef = useRef();
   const [isMuted, setIsMuted] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
@@ -50,7 +50,7 @@ function Video({videoURL, userName, location, caption, profile }) {
     <div className="reel">
       <video
         ref={videoRef}
-        src={videoURL}
+        src={video.url}
         className="reelVideo"
         loop
         muted={isMuted}
@@ -73,15 +73,15 @@ function Video({videoURL, userName, location, caption, profile }) {
       <div className="reelOverlay">
         <div className="post-header">
           <img
-            src= {profile || " https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg"}
+            src="https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg"
             alt="Default Avatar"
             className="story-profile"
             style={{ width: "40px" }}
           />
           <div className="post-header-details">
             <div className="post-header-details-left">
-              <p className="post-u-name">{userName}</p>
-              <p className="post-location">{location}</p>
+              <p className="post-u-name">_Chirath_d</p>
+              <p className="post-location">Embilipitiya</p>
             </div>
             <div className="post-header-details-right">
               <p className="post-time"> • 3d</p>
@@ -91,7 +91,7 @@ function Video({videoURL, userName, location, caption, profile }) {
 
         <div className="post-content">
           <div className="post-caption">
-            <p>{caption}</p>
+            <p>1st post</p>
           </div>
         </div>
       </div>

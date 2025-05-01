@@ -1,14 +1,6 @@
-import { useNavigate } from "react-router-dom";
 
+function Post({img, profile, caption, location, name, onClick}) {
 
-function Post({id, img, profile, caption, location, name, onClick}) {
-
-    const navigate = useNavigate();
-
-    function handlenNav(id) {
-        navigate(`viewPost/${id}`)
-    }
-    
 
     return (
         <>
@@ -36,10 +28,6 @@ function Post({id, img, profile, caption, location, name, onClick}) {
                         <p className="post-u-name">{name}</p>
                         <p>{caption}</p>
                     </div>
-                </div>
-                <div className="post-comment">
-                    <p onClick={() => handlenNav(id)} className="view-comment">View All Comments</p>
-                    <p onClick={() => handlenNav(id)} className="view-comment">Add a Comment...</p>
                 </div>
       </div>
     </>

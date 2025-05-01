@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
 
 function UpdatePost() {
     const { id } = useParams();
@@ -13,7 +12,7 @@ function UpdatePost() {
     const [post, setPost] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
-    
+
     const userId = localStorage.getItem("userEmail");
     const userName = localStorage.getItem("userName");
     const userProfileImage = localStorage.getItem("userImage");
@@ -53,8 +52,8 @@ function UpdatePost() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!caption || !location || !image) {
-            toast.error("Please fill all the fields.");
+        if (!caption || !location) {
+            alert("Please fill in the caption and location fields.");
             return;
         }
 
@@ -161,7 +160,6 @@ function UpdatePost() {
                     </button>
                 </div>
             </form>
-            <ToastContainer />
         </div>
     );
 }
