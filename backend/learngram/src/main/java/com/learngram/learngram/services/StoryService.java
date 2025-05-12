@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import com.learngram.learngram.domain.Story;
 
-public interface StoryServic {
+public interface StoryService {
 
     Story createStory(Story story);
 
