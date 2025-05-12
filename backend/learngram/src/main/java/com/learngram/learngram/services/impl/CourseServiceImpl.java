@@ -62,6 +62,22 @@ public class CourseServiceImpl implements CourseService {
         }
         return false;
     }
+    
+    @Override
+public boolean unenrollFromCourse(String courseId, String userId) {
+    Optional<Course> existingOpt = courseRepository.findById(courseId);
+    if (existingOpt.isPresent()) {
+        Course course = existingOpt.get();
+        boolean unenrolled = course.removeUser(userId); // removeUser is a method in your Course entity
+        
+        if (unenrolled) {
+            courseRepository.save(course);
+            return true;
+        }
+    }
+    return false;
+}
+
 
     @Override
     public Course enrollInCourse(String courseId, String userId) {

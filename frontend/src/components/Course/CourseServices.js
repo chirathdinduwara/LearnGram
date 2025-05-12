@@ -10,7 +10,8 @@ export const enrollCourse = (courseId, userId) => API.post(`/courses/${courseId}
 export const getEnrolledCourses = (userId) => API.get(`/courses/enrolled/${userId}`);
 export const updateCourse = (courseId, updatedData) => API.patch(`/courses/${courseId}`, updatedData);
 export const deleteCourse = (courseId) => API.patch(`/courses/${courseId}`);
-
+export const GetCouseByID = (courseId) => API.get(`/courses/${courseId}`);
+export const unenrollFromCourse = (courseId, userId) => API.delete(`/courses/${courseId}/unenroll/${userId}`);
 /*
 Create Course = http://localhost:8080/courses
 sample body:

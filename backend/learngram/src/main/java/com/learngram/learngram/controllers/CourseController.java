@@ -112,6 +112,16 @@ public ResponseEntity<String> uploadVideo(@RequestParam("video") MultipartFile f
                        : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @DeleteMapping("/{courseId}/unenroll/{userId}")
+    public ResponseEntity<Void> unenrollFromCourse(@PathVariable String courseId, @PathVariable String userId) {
+        boolean unenrolled = courseService.unenrollFromCourse(courseId, userId);
+        return unenrolled ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                          : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    
+    
+
+
     @PostMapping("/{courseId}/enroll/{userId}")
     public ResponseEntity<Course> enrollInCourse(@PathVariable String courseId, @PathVariable String userId) {
         try {
