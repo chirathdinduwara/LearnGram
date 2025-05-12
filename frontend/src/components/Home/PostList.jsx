@@ -38,6 +38,7 @@ function PostList() {
                     location={post.location}
                     name={post.userName}
                     profile={post.userProfileImage}
+                    userId={post.userId}
                     onClick={() => handlePostClick(post.postId)}
                     id={post.postId}
                 />
