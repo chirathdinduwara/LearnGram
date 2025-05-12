@@ -165,11 +165,11 @@ function CourseUpdateForm() {
   };
 
   return (
-    <div className="course-container">
-      <h1 className="course-title">Update Course</h1>
+    <div className="form-container">
+      <h1 className="form-title">Update Course</h1>
 
       <input
-        className="input-title"
+        className="input-field title-input"
         placeholder="Course Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
@@ -177,45 +177,55 @@ function CourseUpdateForm() {
       <br />
 
       <textarea
-        className="input-description"
+        className="input-field description-input"
         placeholder="Course Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
       <br />
 
-      <h3 className="content-heading">Content:</h3>
-      <div className="content-list">
+      <h3 className="section-heading">Course Content</h3>
+      <div className="content-block">
         {content.map((c, i) => (
           <div key={i} className="content-item">
             {c.type === "text" ? (
               <>
-                <p className="content-text">{c.value}</p>
-                <button onClick={() => handleEditContent(i)}>Edit</button>
+                <p className="text-content">{c.value}</p>
+                <button
+                  className="action-btn edit-btn"
+                  onClick={() => handleEditContent(i)}
+                >
+                  Edit
+                </button>
               </>
             ) : c.type === "image" ? (
-              <img src={c.value} alt="content" width="100" />
+              <img src={c.value} alt="content" className="media-image" />
             ) : c.type === "video" ? (
-              <video src={c.value} controls width="200" />
+              <video src={c.value} controls className="media-video" />
             ) : null}
-            <button onClick={() => handleDeleteContent(i)}>Delete</button>
+            <button
+              className="action-btn delete-btn"
+              onClick={() => handleDeleteContent(i)}
+            >
+              Delete
+            </button>
           </div>
         ))}
       </div>
 
       <input
-        className="input-temp-content"
+        className="input-field text-editor"
         placeholder="Add or Edit Text Content"
         value={tempContent}
         onChange={(e) => setTempContent(e.target.value)}
       />
-      <button className="btn-add-text" onClick={handleAddText}>
+      <button className="action-btn add-text-btn" onClick={handleAddText}>
         {editingContentIndex !== null ? "Update Text" : "Add Text"}
       </button>
       <br />
 
       <input
-        className="input-image-upload"
+        className="file-upload image-upload"
         type="file"
         accept="image/*"
         onChange={handleAddImage}
@@ -223,14 +233,14 @@ function CourseUpdateForm() {
       <br />
 
       <input
-        className="input-video-upload"
+        className="file-upload video-upload"
         type="file"
         accept="video/*"
         onChange={handleAddVideo}
       />
       <br />
 
-      <button className="btn-submit" onClick={handleSubmit}>
+      <button className="submit-btn" onClick={handleSubmit}>
         Update Course
       </button>
     </div>
