@@ -14,4 +14,5 @@ public interface CourseService {
     boolean deleteCourse(String courseId);
     Course enrollInCourse(String courseId, String userId);
     List<Course> getEnrolledCourses(String userId);
+    boolean unenrollFromCourse(String courseId, String userId);
 }
