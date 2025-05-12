@@ -4,17 +4,15 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../../css/Course/CourseForm.css";
 
 function CourseUpdateForm() {
-  const { courseId } = useParams(); // Get the course ID from URL
-  const navigate = useNavigate(); // Use navigate for programmatic navigation
+  const { courseId } = useParams();
+  const navigate = useNavigate();
 
-  // State hooks for form fields and course content
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [content, setContent] = useState([]);
   const [tempContent, setTempContent] = useState("");
-  const [editingContentIndex, setEditingContentIndex] = useState(null); // State to track which content is being edited
+  const [editingContentIndex, setEditingContentIndex] = useState(null);
 
-  // Fetch course data on component mount or when courseId changes
   useEffect(() => {
     const fetchCourseData = async () => {
       try {
@@ -33,90 +31,88 @@ function CourseUpdateForm() {
     fetchCourseData();
   }, [courseId]);
 
-  // Add text content to the course
   const handleAddText = () => {
+    if (tempContent.trim() === "") return;
+
     if (editingContentIndex !== null) {
-      // If editing an existing text content, update it
-      const updatedContent = [...content];
-      updatedContent[editingContentIndex] = {
-        type: "text",
-        value: tempContent,
-      };
-      setContent(updatedContent);
-      setEditingContentIndex(null); // Clear editing index after update
+      const updated = [...content];
+      updated[editingContentIndex] = { type: "text", value: tempContent };
+      setContent(updated);
+      setEditingContentIndex(null);
     } else {
-      // If not editing, add new text content
       setContent([...content, { type: "text", value: tempContent }]);
     }
-    setTempContent(""); // Reset text input
+
+    setTempContent("");
   };
 
-  // Add image content to the course
   const handleAddImage = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Basic validation: check if file is an image
-      const fileTypes = ["image/jpeg", "image/png", "image/gif"];
-      if (!fileTypes.includes(file.type)) {
+      if (!["image/jpeg", "image/png", "image/gif"].includes(file.type)) {
         alert("Please upload a valid image (JPEG, PNG, GIF).");
         return;
       }
-
-      // Optional: Check file size (e.g., 5MB max)
       if (file.size > 5 * 1024 * 1024) {
         alert("Image size must be less than 5MB.");
         return;
       }
-
       const url = URL.createObjectURL(file);
-      setContent([...content, { type: "image", value: url }]);
+      setContent([...content, { type: "image", value: url, file }]);
     }
   };
 
-  // Delete content from the course
+  const handleAddVideo = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (!file.type.startsWith("video/")) {
+        alert("Please upload a valid video file.");
+        return;
+      }
+      if (file.size > 100 * 1024 * 1024) {
+        alert("Video size must be less than 100MB.");
+        return;
+      }
+      const url = URL.createObjectURL(file);
+      setContent([...content, { type: "video", value: url, file }]);
+    }
+  };
+
   const handleDeleteContent = (index) => {
-    const updatedContent = content.filter((_, i) => i !== index);
-    setContent(updatedContent);
+    const updated = [...content];
+    updated.splice(index, 1);
+    setContent(updated);
+    if (editingContentIndex === index) {
+      setTempContent("");
+      setEditingContentIndex(null);
+    }
   };
 
-  // Edit text content (pre-fill the input with the current content value)
   const handleEditContent = (index) => {
-    setTempContent(content[index].value); // Set the tempContent to the content's current value
-    setEditingContentIndex(index); // Set the content being edited
+    if (content[index].type === "text") {
+      setTempContent(content[index].value);
+      setEditingContentIndex(index);
+    }
   };
 
-  // Process and submit the form to update course data
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate Title and Description
-    if (!title.trim()) {
-      alert("Please provide a valid course title.");
+    if (!title.trim() || !description.trim() || content.length === 0) {
+      alert("Please complete all fields and add at least one content item.");
       return;
     }
 
-    if (!description.trim()) {
-      alert("Please provide a valid course description.");
-      return;
-    }
-
-    // Validate Content - Ensure there is at least one content item
-    if (content.length === 0) {
-      alert("Please add at least one content item (Text or Image).");
-      return;
-    }
-
-    // Validate Text Content
-    const hasEmptyTextContent = content.some(
+    const hasEmptyText = content.some(
       (item) => item.type === "text" && item.value.trim() === ""
     );
-    if (hasEmptyTextContent) {
+    if (hasEmptyText) {
       alert("Text content cannot be empty.");
       return;
     }
 
     try {
-      const processedContent = await processContentImages(content);
+      const processedContent = await processMediaUploads(content);
 
       const updatedCourse = {
         title,
@@ -125,124 +121,126 @@ function CourseUpdateForm() {
         createdBy: localStorage.getItem("userEmail"),
       };
 
-      // Update course in backend
       await axios.patch(
         `http://localhost:8080/courses/${courseId}`,
         updatedCourse
       );
-
       alert("Course Updated Successfully!");
-      navigate(`/Course-Dashboard`); // Redirect to updated course page
+      navigate(`/Course-Dashboard`);
     } catch (error) {
-      console.error("Error while updating course:", error);
-      alert("There was an error while updating the course.");
+      console.error("Update error:", error);
+      alert("Failed to update course.");
     }
   };
 
-  // Helper function to process image content and upload it to the server
-  const processContentImages = async (content) => {
-    const processedContent = [];
+  const processMediaUploads = async (contentArray) => {
+    const updated = [];
 
-    for (let item of content) {
-      if (item.type === "image" && item.value.startsWith("blob:")) {
+    for (let item of contentArray) {
+      if (
+        (item.type === "image" || item.type === "video") &&
+        item.value.startsWith("blob:")
+      ) {
         const response = await fetch(item.value);
         const blob = await response.blob();
         const formData = new FormData();
-        formData.append("image", blob);
+        formData.append(item.type, blob);
 
-        try {
-          const imageResponse = await axios.post(
-            "http://localhost:8080/courses/CourseImage",
-            formData,
-            {
-              headers: { "Content-Type": "multipart/form-data" },
-            }
-          );
-          const imageUrl = imageResponse.data; // Backend should return the image URL
-          processedContent.push({ type: "image", value: imageUrl });
-        } catch (err) {
-          console.error("Error uploading image:", err);
-          alert("Error uploading image.");
-        }
+        const endpoint =
+          item.type === "image"
+            ? "http://localhost:8080/courses/CourseImage"
+            : "http://localhost:8080/courses/CourseVideo";
+
+        const uploadRes = await axios.post(endpoint, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        updated.push({ type: item.type, value: uploadRes.data });
       } else {
-        processedContent.push(item); // For text content
+        updated.push(item);
       }
     }
 
-    return processedContent;
+    return updated;
   };
 
   return (
-    <div className="course-container">
-      <h1 className="course-title">Update Course</h1>
+    <div className="form-container">
+      <h1 className="form-title">Update Course</h1>
 
-      {/* Course Title */}
       <input
-        className="input-title"
+        className="input-field title-input"
         placeholder="Course Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
       <br />
 
-      {/* Course Description */}
       <textarea
-        className="input-description"
+        className="input-field description-input"
         placeholder="Course Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
       <br />
 
-      <h3 className="content-heading">Content:</h3>
-      <div className="content-list">
-        {/* Render existing content */}
+      <h3 className="section-heading">Course Content</h3>
+      <div className="content-block">
         {content.map((c, i) => (
           <div key={i} className="content-item">
             {c.type === "text" ? (
-              <div>
-                <p className="content-text">{c.value}</p>
-                <button onClick={() => handleEditContent(i)}>Edit</button>
-                <button onClick={() => handleDeleteContent(i)}>Delete</button>
-              </div>
-            ) : (
-              <div>
-                <img
-                  className="content-image"
-                  src={c.value}
-                  alt="content"
-                  width="100"
-                />
-                <button onClick={() => handleDeleteContent(i)}>Delete</button>
-              </div>
-            )}
+              <>
+                <p className="text-content">{c.value}</p>
+                <button
+                  className="action-btn edit-btn"
+                  onClick={() => handleEditContent(i)}
+                >
+                  Edit
+                </button>
+              </>
+            ) : c.type === "image" ? (
+              <img src={c.value} alt="content" className="media-image" />
+            ) : c.type === "video" ? (
+              <video src={c.value} controls className="media-video" />
+            ) : null}
+            <button
+              className="action-btn delete-btn"
+              onClick={() => handleDeleteContent(i)}
+            >
+              Delete
+            </button>
           </div>
         ))}
       </div>
 
-      {/* Add Text Content */}
       <input
-        className="input-temp-content"
+        className="input-field text-editor"
         placeholder="Add or Edit Text Content"
         value={tempContent}
         onChange={(e) => setTempContent(e.target.value)}
       />
-      <button className="btn-add-text" onClick={handleAddText}>
+      <button className="action-btn add-text-btn" onClick={handleAddText}>
         {editingContentIndex !== null ? "Update Text" : "Add Text"}
       </button>
       <br />
 
-      {/* Add Image Content */}
       <input
-        className="input-image-upload"
+        className="file-upload image-upload"
         type="file"
         accept="image/*"
         onChange={handleAddImage}
       />
       <br />
 
-      {/* Submit Form */}
-      <button className="btn-submit" onClick={handleSubmit}>
+      <input
+        className="file-upload video-upload"
+        type="file"
+        accept="video/*"
+        onChange={handleAddVideo}
+      />
+      <br />
+
+      <button className="submit-btn" onClick={handleSubmit}>
         Update Course
       </button>
     </div>

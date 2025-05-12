@@ -5,6 +5,7 @@ import CourseForm from "../components/Course/Course_From";
 import CourseUpdateForm from "../components/Course/Edit_Course_From";
 import MyCourses from "../components/Course/MyCourses";
 import EnrolledCourses from "../components/Course/EnrolledCourses";
+import FullCoursePage from "../components/Course/FullCoursePage";
 
 const CourseRoutes = [
   {
@@ -26,6 +27,10 @@ const CourseRoutes = [
   {
     path: "/my-courses",
     element: <MyCourses />,
+  },
+  {
+    path: "/full-course/:courseId",
+    element: <FullCoursePage />,
   },
   {
     path: "/enrolled",

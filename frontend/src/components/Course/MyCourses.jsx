@@ -5,6 +5,7 @@ import CourseCard from "./CourseCard";
 import { CgTrash, CgPen, CgOptions } from "react-icons/cg";
 import { BsThreeDots } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 function MyCourses() {
   const navigate = useNavigate();
@@ -26,20 +27,41 @@ function MyCourses() {
   };
 
   const handleDelete = async (courseId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this course?"
+    );
+    if (!confirmDelete) return;
+
     try {
       const response = await axios.delete(
         `http://localhost:8080/courses/${courseId}`
       );
       if (response.status === 204) {
-        setMessage("Course deleted successfully.");
+        toast.success("Course deleted successfully.", {
+          className: "instagram-toast",
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+        });
         setActiveCourseId(null); // Close the popup
         fetchCourses();
       }
     } catch (error) {
       if (error.response && error.response.status === 404) {
-        setMessage("Course not found.");
+        toast.error("Course not found.", {
+          className: "instagram-toast",
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+        });
       } else {
-        setMessage("An error occurred while deleting the course.");
+        toast.error("An error occurred while deleting the course.");
       }
     }
   };
@@ -69,7 +91,7 @@ function MyCourses() {
                 activeCourseId === course.courseId ? null : course.courseId
               )
             }
-            style={{ cursor: "pointer", marginLeft: "10px" }}
+            style={{ cursor: "pointer", marginLeft: "-5px" }}
           >
             <BsThreeDots />
           </div>
@@ -118,6 +140,7 @@ function MyCourses() {
           )}
         </div>
       ))}
+      <ToastContainer />
     </div>
   );
 }

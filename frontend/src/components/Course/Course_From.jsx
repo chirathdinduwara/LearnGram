@@ -16,7 +16,6 @@ function CreateCourse() {
 
   const navigate = useNavigate();
 
-  // Validate the form inputs
   const validateForm = () => {
     const newErrors = {};
 
@@ -24,6 +23,25 @@ function CreateCourse() {
     if (!description.trim()) newErrors.description = "Description is required.";
     if (content.length === 0)
       newErrors.content = "Add at least one content item.";
+
+    content.forEach((item, index) => {
+      if (item.type === "video") {
+        if (item.file && item.file.size > 100 * 1024 * 1024) {
+          newErrors[`content-${index}`] = "Video must be under 100MB.";
+        }
+        if (item.file && !item.file.type.startsWith("video/")) {
+          newErrors[`content-${index}`] = "Invalid video format.";
+        }
+      }
+      if (item.type === "image") {
+        if (item.file && item.file.size > 5 * 1024 * 1024) {
+          newErrors[`content-${index}`] = "Image must be under 5MB.";
+        }
+        if (item.file && !item.file.type.startsWith("image/")) {
+          newErrors[`content-${index}`] = "Invalid image format.";
+        }
+      }
+    });
 
     setErrors(newErrors);
 
@@ -45,11 +63,27 @@ function CreateCourse() {
     }
   };
 
+  const handleAddVideo = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setContent([...content, { type: "video", value: url, file }]);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) {
-      toast.error("Invalid Data format !");
+      toast.error("Invalid Data format !", {
+        className: "instagram-toast",
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+      });
       return;
     }
 
@@ -58,27 +92,31 @@ function CreateCourse() {
       const processedContent = [];
 
       for (let item of content) {
-        if (item.type === "image" && item.value.startsWith("blob:")) {
+        if (
+          (item.type === "image" || item.type === "video") &&
+          item.value.startsWith("blob:")
+        ) {
           const formData = new FormData();
-          formData.append("image", item.file);
+          formData.append(item.type, item.file);
 
-          const imageResponse = await axios.post(
-            "http://localhost:8080/courses/CourseImage",
-            formData,
-            {
-              headers: { "Content-Type": "multipart/form-data" },
-              onUploadProgress: (progressEvent) => {
-                const percent = Math.round(
-                  (progressEvent.loaded * 100) / progressEvent.total
-                );
-                setUploadProgress(percent);
-              },
-            }
-          );
+          const uploadUrl =
+            item.type === "image"
+              ? "http://localhost:8080/courses/CourseImage"
+              : "http://localhost:8080/courses/CourseVideo";
 
-          processedContent.push({ type: "image", value: imageResponse.data });
+          const response = await axios.post(uploadUrl, formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+            onUploadProgress: (progressEvent) => {
+              const percent = Math.round(
+                (progressEvent.loaded * 100) / progressEvent.total
+              );
+              setUploadProgress(percent);
+            },
+          });
+
+          processedContent.push({ type: item.type, value: response.data });
         } else {
-          processedContent.push({ type: "text", value: item.value });
+          processedContent.push({ type: item.type, value: item.value });
         }
       }
 
@@ -91,29 +129,31 @@ function CreateCourse() {
 
       await axios.post("http://localhost:8080/courses", newCourse);
 
-      toast.success("Course Created Successfully!", {
-        position: "top-right",
+      toast.success("Course Created Successfully !", {
+        className: "instagram-toast",
+        position: "top-center",
         autoClose: 3000,
-        hideProgressBar: false,
+        hideProgressBar: true,
         closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
+        pauseOnHover: false,
+        draggable: false,
       });
 
       setTitle("");
       setDescription("");
       setContent([]);
 
-      setTimeout(() => navigate("/"), 1500);
+      setTimeout(() => navigate("/Course-Dashboard"), 1500);
     } catch (error) {
       console.error("Error while creating course:", error);
       toast.error("There was an error while creating the course.", {
-        position: "top-right",
-        autoClose: 4000,
-        hideProgressBar: false,
+        className: "instagram-toast",
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
         closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
+        pauseOnHover: false,
+        draggable: false,
       });
     } finally {
       setIsUploading(false);
@@ -157,13 +197,22 @@ function CreateCourse() {
             <div key={i} className="content-item">
               {c.type === "text" ? (
                 <p className="content-text">{c.value}</p>
-              ) : (
+              ) : c.type === "image" ? (
                 <img
                   className="content-image"
                   src={c.value}
                   alt="content"
                   width="100"
                 />
+              ) : c.type === "video" ? (
+                <video width="200" controls>
+                  <source src={c.value} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              ) : null}
+
+              {errors[`content-${i}`] && (
+                <span className="error-text">{errors[`content-${i}`]}</span>
               )}
             </div>
           ))}
@@ -187,6 +236,13 @@ function CreateCourse() {
           accept="image/*"
           onChange={handleAddImage}
         />
+        <input
+          className="input-video-upload"
+          type="file"
+          accept="video/*"
+          onChange={handleAddVideo}
+        />
+
         <br />
         <br />
 
@@ -195,11 +251,10 @@ function CreateCourse() {
         </button>
       </div>
 
-      {/* Upload Progress Modal */}
       {isUploading && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h2>Uploading Image...</h2>
+            <h2>Uploading Media...</h2>
             <div className="loading-bar">
               <div
                 className="progress-bar"
@@ -211,7 +266,6 @@ function CreateCourse() {
         </div>
       )}
 
-      {/* Toast Message Container */}
       <ToastContainer />
     </>
   );
