@@ -32,14 +32,21 @@ function Login() {
       localStorage.setItem("userName", user.name);
       localStorage.setItem("userEmail", user.email);
       localStorage.setItem("userImage", user.imageUrl);
+
+
       setUserData(user);
+
 
       navigate("/");
     } catch (err) {
       console.error("Manual login error:", err);
       setError("Invalid email or password.");
     }
+     
   };
+
+
+ 
 
   const handleLoginSuccess = async (credentialResponse) => {
     if (credentialResponse.credential) {

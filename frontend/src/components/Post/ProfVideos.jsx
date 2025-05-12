@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function ProfVideos() {
     const [posts, setPosts] = useState([]);
@@ -8,8 +8,10 @@ function ProfVideos() {
     const [showMenu, setShowMenu] = useState(null);
     const navigate = useNavigate();
     const canvasRef = useRef(null);
+    const { userId } = useParams(); // userId from route (profile/:userId)
 
-    const userEmail = localStorage.getItem("userEmail");
+    const loggedInEmail = localStorage.getItem("userEmail");
+    const targetEmail = userId || loggedInEmail; // fallback to logged-in user
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -79,8 +81,11 @@ function ProfVideos() {
         navigate(`/viewVideo/${postId}`);
     };
 
-    const userPosts = posts.filter(post => post.userId === userEmail);
-    const filteredPosts = userPosts.filter(post => post.type === "vid").reverse();
+    // Show only posts from the correct user
+    const filteredPosts = posts
+        .filter(post => post.userId === targetEmail) // Show posts of the target user
+        .filter(post => post.type === "vid")
+        .reverse(); // Reverse for most recent first
 
     return (
         <>

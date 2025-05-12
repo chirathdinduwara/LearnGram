@@ -97,6 +97,12 @@ public ResponseEntity<?> loginUser(@RequestBody User loginRequest) {
         return userService.getUserById(id);
     }
 
+    @GetMapping("/email/{email}")
+    public User getUserByEmail(@PathVariable String email) {
+        return userService.getUserByEmail(email);
+    }
+
+
 
     @PutMapping("/{id}")
     public User updateUser(@PathVariable String id, @RequestBody User updatedUser) {

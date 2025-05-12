@@ -91,7 +91,7 @@ function Video({videoURL, userName, location, caption, profile }) {
 
         <div className="post-content">
           <div className="post-caption">
-            <p>{caption}</p>
+            <p className="post-caption">{caption}</p>
           </div>
         </div>
       </div>

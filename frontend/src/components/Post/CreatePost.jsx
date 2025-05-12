@@ -27,57 +27,90 @@ function CreatePost() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!caption || !location || !image) {
-                toast.error("Please fill all the fields.");
-                return;
-            }
-    try {
-      setIsUploading(true);
-      let contentUrl = null;
+  if (!caption || !location || !image) {
+    toast.error("Please fill all the fields.");
+    return;
+  }
 
-      if (image) {
-        const formData = new FormData();
-        formData.append("image", image);
+  try {
+    setIsUploading(true);
+    let contentUrl = null;
 
-        // Upload the image to Spring Boot backend
-        const imageResponse = await axios.post(
-          "http://localhost:8080/image",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-            onUploadProgress: (progressEvent) => {
-              const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-              setUploadProgress(percent);
-          }
-          }
-        );
+    if (image) {
+      const formData = new FormData();
+      formData.append("image", image);
 
-        contentUrl = imageResponse.data; // URL returned from backend
-      }
+      const imageResponse = await axios.post(
+        "http://localhost:8080/image",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          onUploadProgress: (progressEvent) => {
+            const percent = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setUploadProgress(percent);
+          },
+        }
+      );
 
-      // Send post data including contentUrl to backend
-      await axios.post("http://localhost:8080/posts", {
-        userId,
-        userName,
-        contentUrl,
-        caption,
-        userProfileImage,
-        location,
-        type : "img"
-      });
-
-      toast.success("Post added Successfully");
-      navigate("/");
-      setIsUploading(false);
-    } catch (error) {
-      console.error("Error while saving post data:", error);
-      setIsUploading(false);
+      contentUrl = imageResponse.data;
     }
-  };
+
+    // 1. Create the post
+    const postResponse = await axios.post("http://localhost:8080/posts", {
+      userId,
+      userName,
+      contentUrl,
+      caption,
+      userProfileImage,
+      location,
+      type: "img",
+    });
+
+    const createdPostId = postResponse.data.id || "new_post";
+
+    // 2. Get current user data to fetch follower IDs
+    const userResponse = await axios.get(`http://localhost:8080/api/users/email/${userId}`);
+    const followers = userResponse.data.followers || [];
+
+    // ✅ Fetch the emails of followers
+    const followerEmails = [];
+
+    for (const followerId of followers) {
+      // Fetch the user's details (including email) by their ID
+      const followerResponse = await axios.get(`http://localhost:8080/api/users/${followerId}`);
+      const followerEmail = followerResponse.data.email;
+
+      if (followerEmail) {
+        followerEmails.push(followerEmail);
+      }
+    }
+
+    // ✅ Send notifications only if followers exist
+    if (followerEmails.length > 0) {
+      const postNotifyPayload = {
+        followers: followerEmails,
+        message: `${userName} added a new post - ${caption}`,
+        postId: createdPostId // instead of contentUrl
+      };
+
+      await axios.post("http://localhost:8080/notifications/send", postNotifyPayload);
+    }
+
+    navigate("/");
+    setIsUploading(false);
+  } catch (error) {
+    console.error("Post error:", error);
+    setIsUploading(false);
+  }
+};
+
+
 
   return (
     <div className="create-post">
