@@ -77,4 +77,9 @@ public class Course {
     public void updateTimestamps() {
         this.updatedAt = LocalDateTime.now();
     }
+
+    public boolean removeUser(String userId) {
+        return enrolledUsers.remove(userId); // removes the userId from the enrolledUsers list
+    }
+    
 }
