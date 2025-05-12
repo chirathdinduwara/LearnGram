@@ -17,4 +17,9 @@ public interface UserService {
     User updateUser(String id, User updatedUser);
 
     void deleteUser(String id);
+
+    void followUser(String userId, String followerId);
+    void unfollowUser(String userId, String followerId);
+    List<User> getFollowers(String userId);
+
 }

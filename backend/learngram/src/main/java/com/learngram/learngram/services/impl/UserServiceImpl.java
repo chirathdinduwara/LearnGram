@@ -6,8 +6,10 @@ import com.learngram.learngram.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -53,4 +55,38 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(String id) {
         userRepo.deleteById(id);
     }
+
+    @Override
+public void followUser(String userId, String followerId) {
+    User user = getUserById(userId);
+    if (user.getFollowers() == null) {
+        user.setFollowers(new ArrayList<>());
+    }
+    if (!user.getFollowers().contains(followerId)) {
+        user.getFollowers().add(followerId);
+        saveUser(user);
+    }
+}
+
+@Override
+public void unfollowUser(String userId, String followerId) {
+    User user = getUserById(userId);
+    if (user.getFollowers() != null && user.getFollowers().contains(followerId)) {
+        user.getFollowers().remove(followerId);
+        saveUser(user);
+    }
+}
+
+@Override
+public List<User> getFollowers(String userId) {
+    User user = getUserById(userId);
+    if (user.getFollowers() == null) {
+        return new ArrayList<>();
+    }
+
+    return user.getFollowers().stream()
+            .map(this::getUserById)
+            .collect(Collectors.toList());
+}
+
 }
