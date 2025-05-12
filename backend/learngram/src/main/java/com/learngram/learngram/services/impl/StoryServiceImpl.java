@@ -11,7 +11,7 @@ import com.learngram.learngram.domain.Story;
 import com.learngram.learngram.repositories.StoryRepo;
 import com.learngram.learngram.services.StoryService;
 
-@Service
+@Servic
 public class StoryServiceImpl implements StoryService {
 
     private final StoryRepo storyRepo;
