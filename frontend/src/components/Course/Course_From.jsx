@@ -120,14 +120,50 @@ function CreateCourse() {
         }
       }
 
+      const userEmail = localStorage.getItem("userEmail");
+      const userName = localStorage.getItem("userName");
+
       const newCourse = {
         title,
         description,
         content: processedContent,
-        createdBy: localStorage.getItem("userEmail"),
+        createdBy: userEmail,
       };
 
       await axios.post("http://localhost:8080/courses", newCourse);
+
+      // ✅ Notify followers
+      try {
+        const userResponse = await axios.get(
+          `http://localhost:8080/api/users/email/${userEmail}`
+        );
+        const followers = userResponse.data.followers || [];
+
+        const followerEmails = [];
+
+        for (const followerId of followers) {
+          const followerResponse = await axios.get(
+            `http://localhost:8080/api/users/${followerId}`
+          );
+          const followerEmail = followerResponse.data.email;
+          if (followerEmail) followerEmails.push(followerEmail);
+        }
+
+        if (followerEmails.length > 0) {
+          const notifyPayload = {
+            followers: followerEmails,
+            message: `${userName} created a new course: ${title}`,
+            postId: null, // Optional: Replace with course ID if available
+          };
+
+          await axios.post(
+            "http://localhost:8080/notifications/sendCourseNotification",
+            notifyPayload
+          );
+        }
+      } catch (notifyError) {
+        console.error("Error sending notifications:", notifyError);
+      }
 
       toast.success("Course Created Successfully !", {
         className: "instagram-toast",

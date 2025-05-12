@@ -40,6 +40,19 @@ public void sendNotificationToFollowers(@RequestBody Map<String, Object> payload
     }
 }
 
+@PostMapping("/sendCourseNotification")
+public void sendCourseNotificationToFollowers(@RequestBody Map<String, Object> payload) {
+    List<String> followerEmails = (List<String>) payload.get("followers");
+    String courseId = (String) payload.get("courseId");
+    String message = (String) payload.get("message");
+
+    if (followerEmails != null && !followerEmails.isEmpty()) {
+        for (String followerEmail : followerEmails) {
+            notificationService.sendNotification(followerEmail, courseId, message);
+        }
+    }
+}
+
     // Mark notifications as read
     @PutMapping("/read")
     public void markAsRead(@RequestParam String userEmail) {
