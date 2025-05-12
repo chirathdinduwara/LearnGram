@@ -37,7 +37,7 @@ function Post({ id, img, profile, caption, location, name, userId, onClick }) {
                         <p className="post-u-name" onClick={() => handleUserClick(userId)} style={{ cursor: "pointer" }}>
                             {name}
                         </p>
-                        <p>{caption}</p>
+                        <p className="post-caption">{caption}</p>
                     </div>
                 </div>
                 <div className="post-comment">

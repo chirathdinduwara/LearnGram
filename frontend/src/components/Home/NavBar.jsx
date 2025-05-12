@@ -8,6 +8,7 @@ import {
   CgCamera,
   CgFileDocument,
 } from "react-icons/cg";
+import { CiBellOn } from "react-icons/ci";
 import { Link } from "react-router-dom";
 
 function NavBar() {
@@ -74,6 +75,13 @@ function NavBar() {
             <Link className="nav-item" to="/Course-Dashboard">
               <CgNotes size={25} />
               Courses
+            </Link>
+          </li>
+
+          <li className="nav-item">
+            <Link className="nav-item" to="/notification">
+              <CiBellOn size={25} />
+              Notifications
             </Link>
           </li>
 

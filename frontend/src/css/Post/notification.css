@@ -1,0 +1,127 @@
+/* Dark Theme Notification Page Styles */
+.notification-page {
+  width: 100%;
+  height: 100vh; /* Full viewport height */
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #121212; /* Dark background */
+  color: #fff; /* White text for dark theme */
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; /* Space between heading and button */
+  overflow: hidden; /* Prevent any content from overflowing */
+  padding-bottom: 40px; /* Ensure space for the button */
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #ffffff; /* White text color for header */
+}
+
+.notifications-container {
+  width: 100%;
+  max-height: 600px;
+  overflow: auto; /* Allow scrolling */
+  flex-grow: 1; /* Allow the container to take up space */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+.notifications-container::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for WebKit browsers */
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 20px;
+  width: 100%;
+}
+
+.notification-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #333; /* Dark border for items */
+  border-radius: 8px;
+  background-color: #1c1c1c; /* Dark item background */
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.notification-item.unread {
+  background-color: #333333; /* Darker background for unread notifications */
+}
+
+.notification-item.read {
+  background-color: #1c1c1c; /* Lighter for read notifications */
+}
+
+.notification-item:hover {
+  background-color: #444444; /* Hover effect for better interaction */
+}
+
+.notification-user-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 15px;
+  border: 2px solid #fff; /* White border around profile image */
+}
+
+.notification-text {
+  flex: 1;
+  text-align: left;
+}
+
+.notification-message {
+  font-size: 16px;
+  margin: 0;
+  color: #fff; /* White text for the message */
+}
+
+.notification-time {
+  font-size: 12px;
+  color: #bbb; /* Lighter text color for timestamp */
+}
+
+.mark-all-read-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #0095f6; /* Blue button color */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.mark-all-read-btn:hover {
+  background-color: #007bb5; /* Darker blue when hovering */
+}
+
+@media (max-width: 768px) {
+  .notification-page {
+    padding: 15px;
+  }
+
+  .notification-item {
+    padding: 10px;
+  }
+
+  .notification-message {
+    font-size: 14px;
+  }
+
+  .mark-all-read-btn {
+    font-size: 14px;
+  }
+}

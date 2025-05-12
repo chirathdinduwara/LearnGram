@@ -1,5 +1,6 @@
 import CreatePost from "../components/Post/CreatePost";
 import CreateVideo from "../components/Post/CreateVideo";
+import NotificationPage from "../components/Post/Notifications";
 import UpdatePost from "../components/Post/UpdatePost";
 import UpdateVideo from "../components/Post/UpdateVideo";
 import ViewPost from "../components/Post/ViewPost";
@@ -29,6 +30,10 @@ const PostRoutes = [
     {
         path: "editVideo/:id",
         element: <UpdateVideo />
+    },
+    {
+        path: 'notification',
+        element: <NotificationPage />
     }
 ];
 
