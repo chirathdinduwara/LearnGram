@@ -75,7 +75,15 @@ function CreateCourse() {
     e.preventDefault();
 
     if (!validateForm()) {
-      toast.error("Invalid Data format !");
+      toast.error("Invalid Data format !", {
+        className: "instagram-toast",
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+      });
       return;
     }
 
@@ -121,29 +129,31 @@ function CreateCourse() {
 
       await axios.post("http://localhost:8080/courses", newCourse);
 
-      toast.success("Course Created Successfully!", {
-        position: "top-right",
+      toast.success("Course Created Successfully !", {
+        className: "instagram-toast",
+        position: "top-center",
         autoClose: 3000,
-        hideProgressBar: false,
+        hideProgressBar: true,
         closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
+        pauseOnHover: false,
+        draggable: false,
       });
 
       setTitle("");
       setDescription("");
       setContent([]);
 
-      setTimeout(() => navigate("/"), 1500);
+      setTimeout(() => navigate("/Course-Dashboard"), 1500);
     } catch (error) {
       console.error("Error while creating course:", error);
       toast.error("There was an error while creating the course.", {
-        position: "top-right",
-        autoClose: 4000,
-        hideProgressBar: false,
+        className: "instagram-toast",
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
         closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
+        pauseOnHover: false,
+        draggable: false,
       });
     } finally {
       setIsUploading(false);

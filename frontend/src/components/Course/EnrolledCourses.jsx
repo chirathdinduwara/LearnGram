@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { getEnrolledCourses, unenrollFromCourse } from "./CourseServices"; // Add unenroll function here
 import CourseCard from "./CourseCard";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function EnrolledCourses() {
   const [courses, setCourses] = useState([]);
@@ -28,13 +30,37 @@ function EnrolledCourses() {
       const response = await unenrollFromCourse(courseId, userId);
       console.log(response.status);
       if (response.status === 204) {
-        alert("Successfully unenrolled from course!");
+        toast.success("Successfully unenrolled from course !", {
+          className: "instagram-toast",
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+        });
         fetchEnrolled(); // Refresh the list of enrolled courses
       } else {
-        alert("Failed to unenroll from the course.");
+        toast.eroor("Failed to unenroll from the course.", {
+          className: "instagram-toast",
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+        });
       }
     } catch (error) {
-      alert("Error occurred while trying to unenroll.");
+      toast.eroor("Error occurred while trying to unenroll.", {
+        className: "instagram-toast",
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+      });
       console.error("Unenroll error:", error);
     }
   };
@@ -47,17 +73,17 @@ function EnrolledCourses() {
     <div>
       <h1 style={{ color: "#ffff" }}>Enrolled Courses</h1>
       {courses.map((course) => (
-        <div>
-          <div key={course.courseId}>
-            <CourseCard
-              course={course}
-              showEnroll={false}
-              onQuit={handleQuit}
-            />
-          </div>
-          <button onClick={() => goFullCourse(course.courseId)}>View Full Course</button>
+        <div key={course.courseId}>
+          <CourseCard course={course} showEnroll={false} onQuit={handleQuit} />
+          <button
+            className="view-button"
+            onClick={() => goFullCourse(course.courseId)}
+          >
+            View Full Course
+          </button>
         </div>
       ))}
+      <ToastContainer />
     </div>
   );
 }

@@ -46,12 +46,12 @@ function CourseCard({ course, onQuit, showEnroll = true }) {
               className="course-card__quit-button"
               onClick={() => onQuit(course.courseId)} // Ensure this works correctly
               style={{
-                marginLeft: "10px",
+                marginLeft: "1px",
                 backgroundColor: "crimson",
                 color: "white",
               }}
             >
-              Quit
+              UnEnrolled
             </button>
           )}
         </div>

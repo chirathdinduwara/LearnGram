@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { GetCouseByID } from "./CourseServices";
+import "../../css/Course/FullCoursePage.css";
+import { useNavigate } from "react-router-dom";
 
 function FullCoursePage() {
   const { courseId } = useParams();
   const [course, setCourse] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchCourseDetails();
@@ -20,19 +23,22 @@ function FullCoursePage() {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="course-container">
+      <button onClick={() => navigate(-1)}>Go Back</button>
+      <br />
+      <br />
       {course ? (
-        <div>
-          <h1>{course.title}</h1>
-          <p>{course.description}</p>
+        <div className="course-content-wrapper">
+          <h1 className="course-title">{course.title}</h1>
+          <p className="course-description">{course.description}</p>
 
-          <h2>Course Content:</h2>
-          <div>
+          <h2 className="course-section-header">Course Content:</h2>
+          <div className="course-materials">
             {course.content.map((item, index) => {
               switch (item.type) {
                 case "text":
                   return (
-                    <p key={index} style={{ margin: "1em 0" }}>
+                    <p key={index} className="course-text-block">
                       {item.value}
                     </p>
                   );
@@ -42,16 +48,12 @@ function FullCoursePage() {
                       key={index}
                       src={item.value}
                       alt={`course-img-${index}`}
-                      style={{ maxWidth: "100%", margin: "1em 0" }}
+                      className="course-image"
                     />
                   );
                 case "video":
                   return (
-                    <video
-                      key={index}
-                      controls
-                      style={{ maxWidth: "100%", margin: "1em 0" }}
-                    >
+                    <video key={index} controls className="course-video">
                       <source src={item.value} type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
@@ -63,7 +65,7 @@ function FullCoursePage() {
           </div>
         </div>
       ) : (
-        <p>Loading course details...</p>
+        <p className="loading-message">Loading course details...</p>
       )}
     </div>
   );

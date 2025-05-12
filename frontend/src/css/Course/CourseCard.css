@@ -4,7 +4,7 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  width: 1150px;
+  width: 1120px;
   height: 300px;
   margin: 10px;
   color: white;
@@ -14,7 +14,8 @@
 }
 
 .course-card:hover {
-  transform: translateY(-2px);
+  opacity: 9;
+  border: #0160b4 2px solid;
 }
 
 .course-card__content {
@@ -26,6 +27,8 @@
 
 .course-card__details p {
   margin-top: -10px;
+  max-width: 700px;
+  text-align: justify;
 }
 
 .course-card__image {
@@ -43,7 +46,6 @@
   object-fit: cover; /* Maintains aspect ratio without distortion */
   display: block;
 }
-
 
 .course-card__image:hover .course-card__image-img {
   opacity: 0.8;
@@ -78,14 +80,39 @@
   padding: 12px 20px;
   font-size: 1em;
   border-radius: 4px;
+  width: 300px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
   margin-top: auto; /* Pushes button to the bottom */
 }
 
+.view-button {
+  background-color: #085e3e;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1em;
+  border-radius: 4px;
+  width: 200px;
+  cursor: pointer;
+  margin-left: 10px;
+
+}
+
+.course-card__quit-button {
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1em;
+  border-radius: 4px;
+  width: 200px;
+  cursor: pointer;
+  margin-top: auto;
+  margin: auto;
+}
+
 .course-card__enroll-button:hover {
   background-color: #0160b4;
-  transform: scale(1.05);
 }
 
 .course-card__enroll-button:focus {
