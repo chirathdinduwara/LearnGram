@@ -61,7 +61,23 @@ public ResponseEntity<User> saveGoogleUser(@RequestBody User user) {
     }
 }
 
+    @PostMapping("/login")
+public ResponseEntity<?> loginUser(@RequestBody User loginRequest) {
+    String email = loginRequest.getEmail();
+    String password = loginRequest.getPassword();
 
+    User user = userService.getUserByEmail(email);
+
+    if (user == null) {
+        return ResponseEntity.status(401).body("User not found");
+    }
+
+    if (!user.getPassword().equals(password)) {
+        return ResponseEntity.status(401).body("Invalid password");
+    }
+
+    return ResponseEntity.ok(user);
+}
 
 
     @PostMapping("/")
@@ -93,4 +109,38 @@ public ResponseEntity<User> saveGoogleUser(@RequestBody User user) {
         userService.deleteUser(id);
         return "User deleted with ID: " + id;
     }
+
+    // Follow a user
+@PutMapping("/{userId}/follow/{followerId}")
+public ResponseEntity<?> followUser(@PathVariable String userId, @PathVariable String followerId) {
+    try {
+        userService.followUser(userId, followerId);
+        return ResponseEntity.ok("User " + followerId + " followed " + userId);
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+    }
+}
+
+// Unfollow a user
+@PutMapping("/{userId}/unfollow/{followerId}")
+public ResponseEntity<?> unfollowUser(@PathVariable String userId, @PathVariable String followerId) {
+    try {
+        userService.unfollowUser(userId, followerId);
+        return ResponseEntity.ok("User " + followerId + " unfollowed " + userId);
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+    }
+}
+
+// Get followers of a user
+@GetMapping("/{userId}/followers")
+public ResponseEntity<List<User>> getFollowers(@PathVariable String userId) {
+    try {
+        List<User> followers = userService.getFollowers(userId);
+        return ResponseEntity.ok(followers);
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().build();
+    }
+}
+
 }
