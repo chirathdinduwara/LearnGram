@@ -54,7 +54,7 @@ function ViewProfile() {
         <div className="profile">
             <div className="profile-details">
     <img
-        src={viewedUser.profilePicture}
+        src={viewedUser.imageUrl}
         alt="Profile Avatar"
         className="story-profile"
     />
