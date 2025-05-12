@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import com.learngram.learngram.domain.Story;
 
-@Repositor
+@Repository
 public interface StoryRepo extends MongoRepository<Story, String> {
 }
