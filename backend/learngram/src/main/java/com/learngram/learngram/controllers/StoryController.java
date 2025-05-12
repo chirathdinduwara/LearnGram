@@ -16,7 +16,7 @@ import com.learngram.learngram.domain.Story;
 import com.learngram.learngram.services.StoryService;
 
 @RestController
-public class StoryController {
+public class StoryControllr {
 
     private final StoryService storyService;
 
