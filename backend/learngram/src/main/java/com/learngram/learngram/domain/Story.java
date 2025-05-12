@@ -13,7 +13,7 @@ import lombok.Data;
 @Document(collection = "stories")
 public class Story {
 
-    @Id
+    @I
     private String storyId;
 
     private String userId;
