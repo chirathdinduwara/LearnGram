@@ -177,44 +177,44 @@ function ViewPost() {
                             </div>
 
                             <div className="right-post-comments-sec scrollable-comments">
-                                {comments.slice().reverse().map((comment) => (
-                                    <div key={comment.id} className="right-post-header-left comments">
-                                        <img
-                                            src={comment.userProfilePic}
-                                            alt="Default Avatar"
-                                            className="story-profile"
-                                            style={{ width: "30px" }}
-                                        />
-                                        <div className="right-post-header-details commenter">
-                                            <div>
-                                                <p className="post-u-name">{comment.userName}</p>
-                                                <p className="post-u-caption">{comment.comment}</p>
-                                            </div>
-                                            {(comment.userId === userId || post.userId === userId) && (
-    <div className='comment-actions'>
-        {comment.userId === userId && (
-            <CiPickerEmpty
-                className='comment-actions-btn'
-                color='green'
-                size={"20"}
-                onClick={() => openEditPopup(comment)}
-            />
-        )}
-        {(comment.userId === userId || post.userId === userId) && (
-            <CiTrash
-                className='comment-actions-btn'
-                color='red'
-                size={"20"}
-                onClick={() => handleDeleteComment(comment.id)}
-            />
-        )}
-    </div>
-)}
+    {comments.slice().reverse().map((comment) => (
+        comment.comment?.trim() && ( // Check if comment exists and is not just whitespace
+            <div key={comment.id} className="right-post-header-left comments">
+                <img
+                    src={comment.userProfilePic}
+                    alt="Default Avatar"
+                    className="story-profile"
+                    style={{ width: "30px" }}
+                />
+                <div className="right-post-header-details commenter">
+                    <div>
+                        <p className="post-u-name">{comment.userName}</p>
+                        <p className="post-u-caption">{comment.comment}</p>
+                    </div>
+                    {(comment.userId === userId || post.userId === userId) && (
+                        <div className='comment-actions'>
+                            {comment.userId === userId && (
+                                <CiPickerEmpty
+                                    className='comment-actions-btn'
+                                    color='green'
+                                    size={"20"}
+                                    onClick={() => openEditPopup(comment)}
+                                />
+                            )}
+                            <CiTrash
+                                className='comment-actions-btn'
+                                color='red'
+                                size={"20"}
+                                onClick={() => handleDeleteComment(comment.id)}
+                            />
+                        </div>
+                    )}
+                </div>
+            </div>
+        )
+    ))}
+</div>
 
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
                         </div>
 
                         <hr className="line" />
