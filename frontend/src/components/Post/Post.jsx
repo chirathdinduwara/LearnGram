@@ -115,7 +115,7 @@ function Post({ id, img, profile, caption, location, name, userId, onClick }) {
                             : <CiHeart size={30} />
                         }
                     </p>
-                    <span style={{color:'white',fontFamily: 'Roboto'}}>{likeCount} Likes</span> {/* Display the like count */}
+                    <span style={{color:'white',fontFamily: 'Roboto, Times New Roman'}}>{likeCount} Likes</span> {/* Display the like count */}
                 </div>
 
                 <div className="post-caption">
