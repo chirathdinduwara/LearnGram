@@ -5,8 +5,11 @@ import com.learngram.learngram.domain.Interaction;
 import com.learngram.learngram.services.impl.InteractionServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -44,4 +47,31 @@ public class InteractionController {
     public void deleteComment(@PathVariable String id) {
         interactionService.deleteComment(id);
     }
+
+    @PostMapping("/{postId}/like")
+    public void likePost(@PathVariable String postId, @RequestParam String userEmail) {
+        interactionService.addLike(postId, userEmail);
+    }
+
+    @DeleteMapping("/{postId}/like")
+    public void unlikePost(@PathVariable String postId, @RequestParam String userEmail) {
+        interactionService.removeLike(postId, userEmail);
+    }
+
+    @GetMapping("/likeCount")
+    public ResponseEntity<Map<String, Integer>> getLikeCount(@RequestParam String postId) {
+    int count = interactionService.getLikeCount(postId);
+    Map<String, Integer> response = new HashMap<>();
+    response.put("likeCount", count);
+    return ResponseEntity.ok(response);
 }
+
+    @GetMapping("/isLiked")
+public ResponseEntity<Map<String, Boolean>> isLiked(
+        @RequestParam String postId,
+        @RequestParam String userEmail) {
+    boolean liked = interactionService.isLiked(postId, userEmail);
+    return ResponseEntity.ok(Collections.singletonMap("liked", liked));
+}
+}
+

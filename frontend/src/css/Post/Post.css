@@ -85,6 +85,7 @@
 }
 
 
+
 .post-caption {
     font-family: 'Roboto', 'Arial Narrow', Arial, sans-serif;
     color: var(--main-text-color);
@@ -92,7 +93,7 @@
     align-items: center;
     gap: 10px;
     font-size: .8rem;
-    padding: 10px;
+    padding: 0px 2px;
     
 }
 

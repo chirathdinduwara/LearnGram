@@ -22,4 +22,9 @@ public interface InteractionServices {
     // Delete a comment
     void deleteComment(String id);
 
+    void addLike(String postId, String userEmail);
+    void removeLike(String postId, String userEmail);
+    int getLikeCount(String postId);
+    boolean isLiked(String postId, String userEmail);
+
 }
